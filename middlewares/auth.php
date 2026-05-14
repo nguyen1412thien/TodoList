@@ -7,7 +7,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 //secret key for
-$secret_key = "thien_jwt_secret_key";
+$secret_key = "thien_jwt_secret_key_for_todolist_project";
 
 $headers = getallheaders();
 
