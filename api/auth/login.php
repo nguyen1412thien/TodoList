@@ -126,7 +126,7 @@ if (!$is_password_correct) {
 |--------------------------------------------------------------------------
 */
 
-$secret_key = "thien_jwt_secret_key_for_todolist_project_2026";
+$secret_key = "thien_jwt_secret_key_for_todolist_project";
 
 /*
 |--------------------------------------------------------------------------
