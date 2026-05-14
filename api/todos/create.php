@@ -5,11 +5,18 @@ ini_set('display_errors', 1);
 
 header("Content-Type: application/json");
 
+/*
+|--------------------------------------------------------------------------
+| Database + Auth
+|--------------------------------------------------------------------------
+*/
+
 require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../middlewares/auth.php";
 
 /*
 |--------------------------------------------------------------------------
-| Get JSON request body
+| Get JSON body
 |--------------------------------------------------------------------------
 */
 
@@ -24,7 +31,7 @@ $data = json_decode(
 |--------------------------------------------------------------------------
 */
 
-if (!$data) {
+if (!$data || !is_array($data)) {
 
     echo json_encode([
         "error" => "Invalid JSON"
@@ -35,18 +42,17 @@ if (!$data) {
 
 /*
 |--------------------------------------------------------------------------
-| Validate required fields
+| Validate fields
 |--------------------------------------------------------------------------
 */
 
 if (
-    !isset($data["user_id"]) ||
     !isset($data["title"]) ||
-    !isset($data["description"])
+    empty(trim($data["title"]))
 ) {
 
     echo json_encode([
-        "error" => "Missing required fields"
+        "error" => "Title is required"
     ]);
 
     exit;
@@ -54,17 +60,24 @@ if (
 
 /*
 |--------------------------------------------------------------------------
-| Get data
+| Current authenticated user
 |--------------------------------------------------------------------------
 */
 
-$user_id = $data["user_id"];
-$title = $data["title"];
-$description = $data["description"];
+$user_id = $current_user->user_id;
 
 /*
 |--------------------------------------------------------------------------
-| SQL Query
+| Request data
+|--------------------------------------------------------------------------
+*/
+
+$title = trim($data["title"]);
+$description = $data["description"] ?? "";
+
+/*
+|--------------------------------------------------------------------------
+| Insert todo
 |--------------------------------------------------------------------------
 */
 
@@ -81,12 +94,6 @@ VALUES (
 )
 ";
 
-/*
-|--------------------------------------------------------------------------
-| Execute query
-|--------------------------------------------------------------------------
-*/
-
 $result = mysqli_query($conn, $sql);
 
 /*
@@ -98,8 +105,7 @@ $result = mysqli_query($conn, $sql);
 if ($result) {
 
     echo json_encode([
-        "message" => "Todo created successfully",
-        "todo_id" => mysqli_insert_id($conn)
+        "message" => "Todo created"
     ]);
 
 } else {
