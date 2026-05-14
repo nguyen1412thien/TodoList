@@ -27,6 +27,6 @@ INSERT INTO users (
 VALUES (
     1,
     'thien',
-    'thien@example.com',
+    'nt.thien@example.com',
     '123456'
 );

@@ -8,5 +8,20 @@
     "priority": "high",
     "due_date": "2026-05-20 18:00:00",
     "created_at": "2026-05-12 05:20:25"
+  },
+  {
+  "id": 1,
+  "username": "thien",
+  "email": "nt.thien@example.com",
+  "password": "123456",
+  "created_at": "2026-05-12 04:49:38"
+  },
+  {
+  "id": 2,
+  "username": "nguyen1412thien",
+  "email": "nguyenthanhthien.1412thien@gmail.com",
+  "password": "mat.khau",
+  "created_at": "2026-05-14 03:39:43"
   }
 ]
+
