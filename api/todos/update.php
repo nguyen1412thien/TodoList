@@ -5,36 +5,98 @@ ini_set('display_errors', 1);
 
 header("Content-Type: application/json");
 
+/*
+|--------------------------------------------------------------------------
+| Database + Model
+|--------------------------------------------------------------------------
+*/
+
 require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../app/models/Todo.php";
+
+/*
+|--------------------------------------------------------------------------
+| Get JSON body
+|--------------------------------------------------------------------------
+*/
 
 $data = json_decode(
     file_get_contents("php://input"),
     true
 );
 
-if (!$data) {
-    die(json_encode([
+/*
+|--------------------------------------------------------------------------
+| Validate JSON
+|--------------------------------------------------------------------------
+*/
+
+if (!$data || !is_array($data)) {
+
+    echo json_encode([
         "error" => "Invalid JSON"
-    ]));
+    ]);
+
+    exit;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Validate fields
+|--------------------------------------------------------------------------
+*/
+
+if (
+    !isset($data["id"]) ||
+    !isset($data["title"])
+) {
+
+    echo json_encode([
+        "error" => "Missing required fields"
+    ]);
+
+    exit;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Request data
+|--------------------------------------------------------------------------
+*/
+
 $id = $data["id"];
-$title = $data["title"];
-$description = $data["description"];
-$status = $data["status"];
-$priority = $data["priority"];
+$title = trim($data["title"]);
+$description = $data["description"] ?? "";
+$status = $data["status"] ?? "pending";
+$priority = $data["priority"] ?? "medium";
 
-$sql = "
-UPDATE todos
-SET
-    title = '$title',
-    description = '$description',
-    status = '$status',
-    priority = '$priority'
-WHERE id = '$id'
-";
+/*
+|--------------------------------------------------------------------------
+| Todo Model
+|--------------------------------------------------------------------------
+*/
 
-$result = mysqli_query($conn, $sql);
+$todo = new Todo($conn);
+
+/*
+|--------------------------------------------------------------------------
+| Update Todo
+|--------------------------------------------------------------------------
+*/
+
+$result = $todo->update(
+    $id,
+    $title,
+    $description,
+    $status,
+    $priority
+);
+
+/*
+|--------------------------------------------------------------------------
+| Response
+|--------------------------------------------------------------------------
+*/
 
 if ($result) {
 
@@ -45,7 +107,7 @@ if ($result) {
 } else {
 
     echo json_encode([
-        "error" => mysqli_error($conn)
+        "error" => "Failed to update todo"
     ]);
 
 }

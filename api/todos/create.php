@@ -13,6 +13,7 @@ header("Content-Type: application/json");
 
 require_once __DIR__ . "/../../config/database.php";
 require_once __DIR__ . "/../../middlewares/auth.php";
+require_once __DIR__ . "/../../app/models/Todo.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -81,20 +82,13 @@ $description = $data["description"] ?? "";
 |--------------------------------------------------------------------------
 */
 
-$sql = "
-INSERT INTO todos (
-    user_id,
-    title,
-    description
-)
-VALUES (
-    '$user_id',
-    '$title',
-    '$description'
-)
-";
+$todo = new Todo($conn); //todo model instance
 
-$result = mysqli_query($conn, $sql);
+$result = $todo->create(
+    $user_id,
+    $title,
+    $description
+);
 
 /*
 |--------------------------------------------------------------------------
