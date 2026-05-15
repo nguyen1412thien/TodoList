@@ -9,7 +9,7 @@ class Todo
         $this->conn = $db;
     }
 
-    //create todo
+    //create Todo
     public function create($user_id, $title, $description)
     {
         $sql = "
