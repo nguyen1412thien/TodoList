@@ -69,9 +69,92 @@ class Todo
         $stmt = mysqli_prepare($this->conn, $sql);
         mysqli_stmt_bind_param(
             $stmt,
-            "i", 
+            "i",
             $id
         );
         return mysqli_stmt_execute($stmt);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| Get All Todos By User
+|--------------------------------------------------------------------------
+*/
+
+    public function getAllByUser($user_id)
+    {
+        $sql = "
+        SELECT *
+        FROM $this->table
+        WHERE user_id = ?
+        ORDER BY created_at DESC
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param("i", $user_id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| Find Todo By ID
+|--------------------------------------------------------------------------
+*/
+
+    public function findById($id)
+    {
+        $sql = "
+        SELECT *
+        FROM $this->table
+        WHERE id = ?
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param("i", $id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| Check Todo Ownership
+|--------------------------------------------------------------------------
+*/
+
+    public function belongsToUser($todo_id, $user_id)
+    {
+        $sql = "
+        SELECT id
+        FROM $this->table
+        WHERE id = ?
+        AND user_id = ?
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param(
+            "ii",
+            $todo_id,
+            $user_id
+        );
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        return $result->num_rows > 0;
     }
 }

@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 header("Content-Type: application/json");
 
 /*
@@ -12,12 +9,14 @@ header("Content-Type: application/json");
 */
 
 require_once __DIR__ . "/../../config/database.php";
+
 require_once __DIR__ . "/../../middlewares/auth.php";
-require_once __DIR__ . "/../../app/models/Todo.php";
+
+require_once __DIR__ . "/../../app/controllers/TodoController.php";
 
 /*
 |--------------------------------------------------------------------------
-| Get JSON body
+| Get JSON Body
 |--------------------------------------------------------------------------
 */
 
@@ -28,66 +27,18 @@ $data = json_decode(
 
 /*
 |--------------------------------------------------------------------------
-| Validate JSON
+| Controller
 |--------------------------------------------------------------------------
 */
 
-if (!$data || !is_array($data)) {
+$controller = new TodoController(
+    $conn,
+    $current_user
+);
 
-    echo json_encode([
-        "error" => "Invalid JSON"
-    ]);
-
-    exit;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Validate fields
-|--------------------------------------------------------------------------
-*/
-
-if (
-    !isset($data["title"]) ||
-    empty(trim($data["title"]))
-) {
-
-    echo json_encode([
-        "error" => "Title is required"
-    ]);
-
-    exit;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Current authenticated user
-|--------------------------------------------------------------------------
-*/
-
-$user_id = $current_user->user_id;
-
-/*
-|--------------------------------------------------------------------------
-| Request data
-|--------------------------------------------------------------------------
-*/
-
-$title = trim($data["title"]);
-$description = $data["description"] ?? "";
-
-/*
-|--------------------------------------------------------------------------
-| Insert todo
-|--------------------------------------------------------------------------
-*/
-
-$todo = new Todo($conn); //todo model instance
-
-$result = $todo->create(
-    $user_id,
-    $title,
-    $description
+$result = $controller->store(
+    $current_user->user_id,
+    $data
 );
 
 /*
@@ -96,16 +47,21 @@ $result = $todo->create(
 |--------------------------------------------------------------------------
 */
 
-if ($result) {
+http_response_code(
+    $result["code"] ??
+    ($result["success"] ? 200 : 400)
+);
 
-    echo json_encode([
-        "message" => "Todo created"
-    ]);
+echo json_encode(
 
-} else {
+    $result["success"]
 
-    echo json_encode([
-        "error" => mysqli_error($conn)
-    ]);
+    ? [
+        "message" => $result["message"]
+    ]
 
-}
+    : [
+        "error" => $result["error"]
+    ]
+
+);
