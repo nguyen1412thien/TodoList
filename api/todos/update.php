@@ -1,18 +1,16 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 header("Content-Type: application/json");
 
 /*
 |--------------------------------------------------------------------------
-| Database + Model
+| Database + Auth
 |--------------------------------------------------------------------------
 */
 
 require_once __DIR__ . "/../../config/database.php";
-require_once __DIR__ . "/../../app/models/Todo.php";
+require_once __DIR__ . "/../../middlewares/auth.php";
+require_once __DIR__ . "/../../app/controllers/TodoController.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -27,69 +25,18 @@ $data = json_decode(
 
 /*
 |--------------------------------------------------------------------------
-| Validate JSON
+| Controller
 |--------------------------------------------------------------------------
 */
 
-if (!$data || !is_array($data)) {
+$controller = new TodoController(
+    $conn,
+    $current_user
+);
 
-    echo json_encode([
-        "error" => "Invalid JSON"
-    ]);
-
-    exit;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Validate fields
-|--------------------------------------------------------------------------
-*/
-
-if (
-    !isset($data["id"]) ||
-    !isset($data["title"])
-) {
-
-    echo json_encode([
-        "error" => "Missing required fields"
-    ]);
-
-    exit;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Request data
-|--------------------------------------------------------------------------
-*/
-
-$id = $data["id"];
-$title = trim($data["title"]);
-$description = $data["description"] ?? "";
-$status = $data["status"] ?? "pending";
-$priority = $data["priority"] ?? "medium";
-
-/*
-|--------------------------------------------------------------------------
-| Todo Model
-|--------------------------------------------------------------------------
-*/
-
-$todo = new Todo($conn);
-
-/*
-|--------------------------------------------------------------------------
-| Update Todo
-|--------------------------------------------------------------------------
-*/
-
-$result = $todo->update(
-    $id,
-    $title,
-    $description,
-    $status,
-    $priority
+$result = $controller->update(
+    $current_user->user_id,
+    $data ?: []
 );
 
 /*
@@ -98,16 +45,21 @@ $result = $todo->update(
 |--------------------------------------------------------------------------
 */
 
-if ($result) {
+http_response_code(
+    $result["code"] ??
+    ($result["success"] ? 200 : 400)
+);
 
-    echo json_encode([
-        "message" => "Todo updated"
-    ]);
+echo json_encode(
 
-} else {
+    $result["success"]
 
-    echo json_encode([
-        "error" => "Failed to update todo"
-    ]);
+    ? [
+        "message" => $result["message"]
+    ]
 
-}
+    : [
+        "error" => $result["error"]
+    ]
+
+);
