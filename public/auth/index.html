@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Đăng nhập</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="app" class="container">
+
+        <div id="auth-section" class="auth-container card card-auth">
+            <div class="text-center mb-8">
+                <div class="logo-icon flex items-center justify-center mb-4" style="margin-left: auto; margin-right: auto;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <h2 class="font-bold text-main" style="font-size: 1.5rem;">ZenTask</h2>
+                <p class="text-muted font-medium text-sm mt-1">Đăng nhập để quản lý công việc</p>
+            </div>
+
+            <!-- Auth Tabs -->
+            <div class="flex tabs-container mb-6">
+                <button id="tab-login" class="flex-1 tab-btn font-bold active" onclick="showLogin()">Đăng nhập</button>
+                <button id="tab-register" class="flex-1 tab-btn font-bold" onclick="showRegister()">Đăng ký</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Mật khẩu" class="form-input">
+                </div>
+                <div class="input-group" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="checkbox" id="remember-me" style="width: auto;">
+                    <label for="remember-me" class="text-sm font-medium text-muted">Nhớ thiết bị này</label>
+                </div>
+                <button onclick="login()" class="btn btn-primary btn-block mt-4">Đăng Nhập</button>
+                <div id="login-error" class="text-danger text-sm text-center font-medium mt-4"></div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="hidden">
+                <div class="input-group">
+                    <input type="text" id="reg-name" placeholder="Tên hiển thị" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="reg-username" placeholder="Tên đăng nhập" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="email" id="reg-email" placeholder="Email" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="reg-password" placeholder="Mật khẩu" class="form-input">
+                </div>
+                <button onclick="register()" class="btn btn-primary btn-block mt-4">Đăng Ký</button>
+                <div id="reg-error" class="text-danger text-sm text-center font-medium mt-4"></div>
+                <div id="reg-success" class="text-success text-sm text-center font-medium mt-4"></div>
+            </div>
+        </div>
+
+        
+    </div>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Công việc</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="app" class="container">
+
+        <div id="todo-section">
+            <!-- User Profile Widget (Trigger) -->
+            <div class="profile-widget card-shadow mb-10 flex items-center justify-between" onclick="window.location.href='../user/'">
+                <div class="flex items-center gap-4">
+                    <div class="avatar-container relative">
+                        <div class="avatar-box bg-gradient-primary flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div class="avatar-badge bg-success absolute flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 id="widget-user-name" class="font-bold text-dark tracking-tight leading-none mb-1 text-lg">Tên người dùng</h2>
+                        <div class="flex items-center gap-3">
+                            <span class="badge-level font-bold text-primary bg-primary-light locked-feature-text" title="Sắp ra mắt">Lv. 0</span>
+                            <span class="badge-streak font-bold text-muted locked-feature-text" title="Sắp ra mắt">🔥 0 Day</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-icon text-muted hover-bg-light" style="background:transparent; border:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+            </div>
+
+            <!-- Header -->
+            <header class="mb-10">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="logo-icon logo-icon-sm flex items-center justify-center text-white bg-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <h1 class="font-bold tracking-widest text-dark" style="font-size: 1.875rem; letter-spacing: -0.025em;">ZenTask</h1>
+                </div>
+                <p class="text-muted font-medium text-sm ml-13">Stay focused and get things done.</p>
+            </header>
+
+            <!-- Input Area -->
+            <div class="card mb-8">
+                <div class="input-group" style="position: relative;">
+                    <input type="text" id="new-todo-title" placeholder="Bạn cần làm gì hôm nay?" class="form-input form-input-lg" style="background-color: var(--bg-input);" onkeypress="handleKeyPress(event)">
+                    <button onclick="createTodo()" class="btn btn-primary btn-icon btn-icon-absolute">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                </div>
+                
+                <div class="grid-2 mb-4">
+                    <!-- Priority -->
+                    <div>
+                        <label class="form-label">Độ ưu tiên</label>
+                        <div class="flex gap-1 input-match-height" id="new-priority-btns">
+                            <button type="button" onclick="setNewPriority('low', this)" class="btn priority-btn flex-1" data-value="low">Thấp</button>
+                            <button type="button" onclick="setNewPriority('medium', this)" class="btn priority-btn flex-1 priority-medium active" data-value="medium">Vừa</button>
+                            <button type="button" onclick="setNewPriority('high', this)" class="btn priority-btn flex-1" data-value="high">Cao</button>
+                        </div>
+                        <input type="hidden" id="new-priority-value" value="medium">
+                    </div>
+
+                    <!-- Due Date -->
+                    <div>
+                        <label class="form-label">Hạn chót</label>
+                        <button type="button" id="new-todo-duedate-display" class="form-input input-match-height text-left text-muted" onclick="openDatetimeModal('new')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; background-color: var(--bg-card);">
+                            <span id="new-todo-duedate-text">Chọn ngày giờ</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        </button>
+                        <input type="hidden" id="new-todo-duedate" value="">
+                    </div>
+                </div>
+
+                <!-- Description Toggle -->
+                <div class="pt-4" style="border-top: 1px solid var(--border-light); margin-top: 0.5rem;">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="form-label" style="margin: 0;">Thêm mô tả chi tiết</label>
+                        <button id="desc-toggle-btn" type="button" onclick="toggleDescription()" class="toggle-switch">
+                            <span id="desc-toggle-circle" class="toggle-circle"></span>
+                        </button>
+                    </div>
+                    <div id="new-todo-desc-container" class="hidden">
+                        <textarea id="new-todo-desc" placeholder="Nhập mô tả cho công việc này..." rows="3" class="form-input mt-2"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Stats -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex tabs-container" id="filter-tabs">
+                    <button onclick="setFilter('all', this)" class="btn filter-btn active" data-filter="all">Tất cả</button>
+                    <button onclick="setFilter('pending', this)" class="btn filter-btn" data-filter="pending">Đang làm</button>
+                    <button onclick="setFilter('completed', this)" class="btn filter-btn" data-filter="completed">Đã xong</button>
+                </div>
+                <div class="text-right">
+                    <span class="form-label">Tiến độ</span>
+                    <span id="progress-text" class="text-sm font-bold text-dark">0%</span>
+                </div>
+            </div>
+
+            <!-- List Items -->
+            <div id="todos-list" class="flex flex-col gap-3">
+                <!-- Todos will be injected here -->
+            </div>
+
+            <!-- Footer -->
+            <footer class="flex justify-between items-center mt-20 pt-8" style="border-top: 1px solid var(--border-light);">
+                <div class="flex gap-6">
+                    <div>
+                        <span class="form-label">Active</span>
+                        <span id="active-count" class="text-sm font-bold text-dark">0</span>
+                    </div>
+                    <div>
+                        <span class="form-label">Done</span>
+                        <span id="done-count" class="text-sm font-bold text-dark">0</span>
+                    </div>
+                </div>
+                <span class="form-label" style="margin: 0; color: #d1d5db;">Design v2.0 CSS</span>
+            </footer>
+        </div>
+    
+        
+    <div id="edit-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title font-bold text-main">Chỉnh sửa công việc</h2>
+            
+            <input type="hidden" id="edit-todo-id">
+            
+            <div class="input-group">
+                <label class="form-label">Tiêu đề</label>
+                <input type="text" id="edit-todo-title" class="form-input">
+            </div>
+            
+            <div class="input-group">
+                <label class="form-label">Mô tả (Tùy chọn)</label>
+                <input type="text" id="edit-todo-desc" class="form-input">
+            </div>
+
+            <div class="mb-6 grid-2">
+                <div>
+                    <label class="form-label">Độ ưu tiên</label>
+                    <div class="flex gap-1 input-match-height" id="edit-priority-btns">
+                        <button type="button" onclick="setEditPriority('low', this)" class="btn priority-btn flex-1" data-value="low">Thấp</button>
+                        <button type="button" onclick="setEditPriority('medium', this)" class="btn priority-btn flex-1" data-value="medium">Vừa</button>
+                        <button type="button" onclick="setEditPriority('high', this)" class="btn priority-btn flex-1" data-value="high">Cao</button>
+                    </div>
+                    <input type="hidden" id="edit-todo-priority" value="medium">
+                </div>
+                
+                <div>
+                    <label class="form-label">Hạn chót</label>
+                    <button type="button" id="edit-todo-duedate-display" class="form-input input-match-height text-left text-muted" onclick="openDatetimeModal('edit')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; background-color: var(--bg-card);">
+                        <span id="edit-todo-duedate-text">Chọn ngày giờ</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </button>
+                    <input type="hidden" id="edit-todo-duedate" value="">
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeEditModal()" class="btn btn-block btn-cancel">Hủy</button>
+                <button onclick="updateTodo()" class="btn btn-block btn-primary">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="datetime-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title font-bold text-main">Chọn Hạn chót</h2>
+            
+            <div class="mb-4">
+                <label class="form-label">Ngày</label>
+                <div class="styled-date-container">
+                    <input type="date" id="modal-date" class="form-input styled-date-input">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="form-label mb-0">Thời gian</label>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold" id="format-label-12h" style="color: var(--text-main);">12h</span>
+                        <button id="time-format-toggle" type="button" onclick="toggleTimeFormat()" class="toggle-switch">
+                            <span class="toggle-circle"></span>
+                        </button>
+                        <span class="text-xs font-bold text-muted" id="format-label-24h">24h</span>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 items-center time-input-container">
+                    <input type="number" id="modal-hour" class="form-input time-input text-center font-bold" min="1" max="12" placeholder="12" onchange="validateTimeInput(this, 'hour')" onblur="formatTimeInput(this)">
+                    <span class="font-bold text-lg">:</span>
+                    <input type="number" id="modal-minute" class="form-input time-input text-center font-bold" min="0" max="59" placeholder="00" onchange="validateTimeInput(this, 'minute')" onblur="formatTimeInput(this)">
+                    
+                    <div id="ampm-toggle-container" class="flex tabs-container ml-2" style="padding: 0.15rem;">
+                        <button type="button" id="btn-am" class="tab-btn font-bold active" style="padding: 0.3rem 0.6rem;" onclick="setAmPm('AM')">AM</button>
+                        <button type="button" id="btn-pm" class="tab-btn font-bold" style="padding: 0.3rem 0.6rem;" onclick="setAmPm('PM')">PM</button>
+                        <input type="hidden" id="modal-ampm" value="AM">
+                    </div>
+                </div>
+                <input type="hidden" id="modal-time-format" value="12">
+            </div>
+
+            <div class="flex gap-3 mt-4">
+                <button onclick="closeDatetimeModal()" class="btn btn-block btn-cancel">Bỏ qua</button>
+                <button onclick="saveDatetime()" class="btn btn-block btn-primary">Xác nhận</button>
+                <button onclick="clearDatetime()" class="btn btn-block" style="background: transparent; color: var(--color-danger); border: 1px solid var(--border-light);">Xóa trắng</button>
+            </div>
+        </div>
+    </div>
+
+    
+    </div>
+    <script src="../js/api.js"></script>
+    <script src="../js/todo.js"></script>
+    <script>
+        requireAuth();
+        document.addEventListener('DOMContentLoaded', fetchTodos);
+    </script>
+</body>
+</html>

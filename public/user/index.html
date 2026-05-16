@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Hồ sơ</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="app" class="container">
+
+        <div id="profile-section" >
+            <!-- Header -->
+            <div class="flex items-center gap-4 mb-8">
+                <button class="btn-icon btn-white card-shadow text-muted" onclick="window.location.href='../todo/'" style="padding: 0.75rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <h1 class="font-bold text-dark text-xl" style="font-size: 1.25rem;">Hồ sơ cá nhân</h1>
+            </div>
+
+            <!-- Profile Info Card -->
+            <section class="profile-main-card card-shadow mb-8 relative text-center">
+                <div class="profile-card-bg-deco absolute"></div>
+                <div class="profile-avatar-large bg-gradient-primary mx-auto mb-4 relative z-10 flex items-center justify-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h2 id="profile-user-name" class="font-bold text-dark text-2xl mb-1">Tên người dùng</h2>
+                <p id="profile-user-date" class="text-muted text-sm font-medium mb-6">Thành viên từ ...</p>
+                
+                <div class="locked-feature" title="Tính năng cấp độ sẽ sớm ra mắt!">
+                    <div class="progress-bar-bg mb-2">
+                        <div class="progress-bar-fill bg-primary" style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between w-full text-xs font-bold uppercase tracking-widest text-muted">
+                        <span>Tiến trình cấp độ</span>
+                        <span class="text-primary locked-feature-text">0%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid mb-8">
+                <div class="stat-card card-shadow text-center">
+                    <div class="stat-icon-container bg-success-light text-success mx-auto mb-3 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                    </div>
+                    <p class="stat-label uppercase font-bold text-muted tracking-wider mb-1">Hoàn thành</p>
+                    <p id="profile-completed-count" class="font-bold text-dark text-lg">0</p>
+                </div>
+                <div class="stat-card card-shadow text-center locked-feature" title="Chuỗi ngày sẽ sớm ra mắt!">
+                    <div class="stat-icon-container bg-warning-light text-warning mx-auto mb-3 flex items-center justify-center locked-feature-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                    </div>
+                    <p class="stat-label uppercase font-bold text-muted tracking-wider mb-1">Chuỗi ngày</p>
+                    <p class="font-bold text-dark text-lg locked-feature-text">0 ngày</p>
+                </div>
+            </div>
+            
+            <!-- Settings & Locked Features -->
+            <div class="card mb-8 p-0 border-0 card-shadow overflow-hidden">
+                <div class="setting-item flex items-center justify-between p-4 border-b border-light locked-feature" title="Tính năng thông báo đang được phát triển">
+                    <div class="flex items-center gap-3">
+                        <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+                        <span class="font-medium text-dark locked-feature-text">Thông báo</span>
+                    </div>
+                    <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+                </div>
+                <div class="setting-item flex items-center justify-between p-4 locked-feature" title="Tính năng bảo mật đang được phát triển">
+                    <div class="flex items-center gap-3">
+                        <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <span class="font-medium text-dark locked-feature-text">Bảo mật</span>
+                    </div>
+                    <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+                </div>
+            </div>
+            
+            <button onclick="logout()" class="btn btn-block font-bold text-danger uppercase tracking-widest mb-10" style="background: transparent; border: 1px solid var(--color-danger);">
+                Đăng xuất tài khoản
+            </button>
+        </div>
+    </div>
+
+    
+    </div>
+    <script src="../js/api.js"></script>
+    <script src="../js/todo.js"></script>
+    <script src="../js/user.js"></script>
+    <script>
+        requireAuth();
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchTodos().then(() => showProfile());
+        });
+    </script>
+</body>
+</html>

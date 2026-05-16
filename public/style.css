@@ -98,8 +98,9 @@ body {
 
 /* Layout */
 .container {
-    max-width: 42rem;
+    max-width: 50rem;
     margin: 0 auto;
+    width: 100%;
 }
 
 .auth-container {
@@ -658,4 +659,143 @@ textarea.form-input {
     background-color: #fff1f2;
     color: var(--color-danger);
     border: 1px solid #ffe4e6;
+}
+/* ================= Profile Styles ================= */
+.profile-widget {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.profile-widget:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.08);
+}
+.avatar-container {
+    position: relative;
+}
+.avatar-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+}
+.avatar-badge {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    bottom: -0.25rem;
+    right: -0.25rem;
+    border: 4px solid #fff;
+}
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #3b82f6, #4f46e5);
+}
+.badge-level {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+}
+.badge-streak {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Profile Page */
+.profile-main-card {
+    background: #fff;
+    border-radius: 2.5rem;
+    padding: 2rem;
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+}
+.profile-card-bg-deco {
+    top: 0;
+    right: 0;
+    width: 8rem;
+    height: 8rem;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    margin-right: -4rem;
+    margin-top: -4rem;
+    opacity: 0.5;
+}
+.profile-avatar-large {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.5);
+    border: 4px solid #fff;
+    margin-left: auto;
+    margin-right: auto;
+}
+.progress-bar-bg {
+    width: 100%;
+    background-color: var(--bg-body);
+    height: 0.5rem;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 9999px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.stat-card {
+    padding: 1.25rem;
+    background: #fff;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-light);
+}
+.stat-icon-container {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 1rem;
+}
+.stat-label {
+    font-size: 0.625rem;
+}
+
+/* Locked Features styling */
+.locked-feature {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    position: relative;
+}
+.locked-feature-text {
+    color: var(--text-muted) !important;
+}
+.locked-feature:hover {
+    opacity: 0.6;
+}
+
+/* Overrides for bg colors */
+.bg-primary-light { background-color: #eff6ff; }
+.bg-success { background-color: #10b981; }
+.bg-success-light { background-color: #ecfdf5; }
+.text-success { color: #10b981; }
+.bg-warning-light { background-color: #fff7ed; }
+.text-warning { color: #f97316; }
+
+.hover-bg-light:hover {
+    background-color: var(--bg-body);
+    border-radius: 1rem;
+}
+.btn-white {
+    background-color: #fff;
+    border: 1px solid var(--border-light);
 }

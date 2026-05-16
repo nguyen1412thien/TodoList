@@ -1,123 +1,6 @@
-const API_BASE = '../api';
-
-let token = localStorage.getItem('token');
-let currentUser = null;
 let currentTodos = [];
 let currentFilter = 'all';
-
-// Initialization
-document.addEventListener('DOMContentLoaded', () => {
-    if (token) {
-        showTodoSection();
-        fetchTodos();
-    } else {
-        showLogin();
-    }
-});
-
-// UI Toggles
-function showLogin() {
-    document.getElementById('login-form').classList.remove('hidden');
-    document.getElementById('register-form').classList.add('hidden');
-    
-    document.getElementById('tab-login').className = "flex-1 tab-btn font-bold active";
-    document.getElementById('tab-register').className = "flex-1 tab-btn font-bold";
-}
-
-function showRegister() {
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('register-form').classList.remove('hidden');
-    
-    document.getElementById('tab-login').className = "flex-1 tab-btn font-bold";
-    document.getElementById('tab-register').className = "flex-1 tab-btn font-bold active";
-}
-
-function showTodoSection() {
-    document.getElementById('auth-section').classList.add('hidden');
-    document.getElementById('todo-section').classList.remove('hidden');
-}
-
-function showAuthSection() {
-    document.getElementById('auth-section').classList.remove('hidden');
-    document.getElementById('todo-section').classList.add('hidden');
-}
-
-// API Helpers
-async function apiCall(endpoint, method = 'GET', body = null) {
-    const headers = { 'Content-Type': 'application/json' };
-    if (token) headers['Authorization'] = `Bearer ${token}`;
-
-    const options = { method, headers };
-    if (body) options.body = JSON.stringify(body);
-
-    try {
-        const response = await fetch(`${API_BASE}${endpoint}`, options);
-        const data = await response.json();
-        return { status: response.status, data };
-    } catch (error) {
-        console.error('API Error:', error);
-        return { status: 500, data: { error: 'Network error' } };
-    }
-}
-
-// Auth Actions
-async function login() {
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    const errorDiv = document.getElementById('login-error');
-    errorDiv.textContent = '';
-
-    const { status, data } = await apiCall('/auth/login.php', 'POST', { email, password });
-
-    if (status === 200 && data.token) {
-        token = data.token;
-        localStorage.setItem('token', token);
-        showTodoSection();
-        fetchTodos();
-    } else {
-        errorDiv.textContent = data.error || 'Đăng nhập thất bại';
-    }
-}
-
-async function register() {
-    const name = document.getElementById('reg-name').value;
-    const username = document.getElementById('reg-username').value;
-    const email = document.getElementById('reg-email').value;
-    const password = document.getElementById('reg-password').value;
-    const errorDiv = document.getElementById('reg-error');
-    const successDiv = document.getElementById('reg-success');
-
-    errorDiv.textContent = '';
-    successDiv.textContent = '';
-
-    const { status, data } = await apiCall('/auth/register.php', 'POST', { name, username, email, password });
-
-    if (status === 201 || (status === 200 && data.message)) {
-        successDiv.textContent = 'Đăng ký thành công! Đang chuyển sang đăng nhập...';
-        setTimeout(() => {
-            document.getElementById('login-email').value = email;
-            showLogin();
-            successDiv.textContent = '';
-        }, 1500);
-    } else {
-        errorDiv.textContent = data.error || 'Đăng ký thất bại';
-    }
-}
-
-function logout() {
-    token = null;
-    currentUser = null;
-    localStorage.removeItem('token');
-    showAuthSection();
-    showLogin();
-}
-
-function goToProfile() {
-    // Placeholder function for navigation to the user profile page.
-    // Replace this with actual navigation logic when the profile page is built.
-    alert("Chức năng đang được phát triển. Sẽ chuyển hướng đến trang tài khoản cá nhân của: " + (currentUser.name || currentUser.username));
-}
-
+let currentUser = null;
 // Todo Priority UI handling
 function setNewPriority(priority, btnElement) {
     document.getElementById('new-priority-value').value = priority;
@@ -185,7 +68,7 @@ async function fetchTodos() {
         currentTodos = data.todos;
         
         let usernameDisplay = currentUser.name || currentUser.username;
-        document.getElementById('user-info').textContent = `Chào, ${usernameDisplay}`;
+        updateWidgetProfile();
         
         renderTodos();
     } else {
@@ -206,7 +89,7 @@ function renderTodos() {
         filteredTodos = currentTodos.filter(t => t.status === currentFilter);
     }
 
-    // Update Stats
+    // Update Stats & Profile
     const activeCount = currentTodos.filter(t => t.status !== 'completed').length;
     const doneCount = currentTodos.filter(t => t.status === 'completed').length;
     const totalCount = currentTodos.length;
@@ -215,6 +98,10 @@ function renderTodos() {
     document.getElementById('active-count').textContent = activeCount;
     document.getElementById('done-count').textContent = doneCount;
     document.getElementById('progress-text').textContent = `${progress}%`;
+    
+    // Update profile view stats
+    const completedTasksElem = document.getElementById('profile-completed-count');
+    if (completedTasksElem) completedTasksElem.textContent = doneCount;
 
     if (filteredTodos.length === 0) {
         listDiv.innerHTML = '<div class="text-center text-muted text-sm font-medium pt-8">Không có công việc nào.</div>';
