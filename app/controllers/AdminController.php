@@ -298,4 +298,79 @@ class AdminController
             ];
         }
     }
+
+    // Cập nhật toàn bộ thông tin người dùng (Chỉ dành cho Superadmin)
+    public function updateUserFullDetails($conn, int $target_id, array $data): array
+    {
+        if (!$this->isSuperAdmin()) {
+            return [
+                "success" => false, 
+                "error" => "Chỉ Quản trị viên tối cao mới có quyền thay đổi thông tin người dùng!", 
+                "code" => 403
+            ];
+        }
+
+        try {
+            // 1. Kiểm tra tài khoản mục tiêu
+            $sql = "SELECT id, role, username, email FROM users WHERE id = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $target_id);
+            mysqli_stmt_execute($stmt);
+            $target_user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+
+            if (!$target_user) {
+                return ["success" => false, "error" => "Không tìm thấy người dùng", "code" => 404];
+            }
+
+            // 2. Không được đổi username hoặc email trùng với tài khoản khác
+            $check_sql = "SELECT id FROM users WHERE (username = ? OR email = ?) AND id != ?";
+            $check_stmt = mysqli_prepare($conn, $check_sql);
+            mysqli_stmt_bind_param($check_stmt, "ssi", $data['username'], $data['email'], $target_id);
+            mysqli_stmt_execute($check_stmt);
+            $duplicate = mysqli_fetch_assoc(mysqli_stmt_get_result($check_stmt));
+
+            if ($duplicate) {
+                return [
+                    "success" => false, 
+                    "error" => "Tên đăng nhập hoặc Email đã được sử dụng bởi tài khoản khác!", 
+                    "code" => 400
+                ];
+            }
+
+            // 3. Chuẩn bị SQL update
+            $params = [$data['name'], $data['username'], $data['email'], $data['phone'], $data['role'], $data['status']];
+            $types = "ssssss";
+
+            $password_sql = "";
+            if (!empty($data['password'])) {
+                $hashed = password_hash($data['password'], PASSWORD_DEFAULT);
+                $password_sql = ", password = ?";
+                $params[] = $hashed;
+                $types .= "s";
+            }
+
+            $params[] = $target_id;
+            $types .= "i";
+
+            $update_sql = "UPDATE users SET name = ?, username = ?, email = ?, phone = ?, role = ?, status = ? $password_sql WHERE id = ?";
+            $update_stmt = mysqli_prepare($conn, $update_sql);
+            mysqli_stmt_bind_param($update_stmt, $types, ...$params);
+
+            if (mysqli_stmt_execute($update_stmt)) {
+                return [
+                    "success" => true,
+                    "message" => "Cập nhật thông tin tài khoản thành công!"
+                ];
+            } else {
+                throw new Exception(mysqli_error($conn));
+            }
+
+        } catch (Exception $e) {
+            return [
+                "success" => false, 
+                "error" => "Database error: " . $e->getMessage(), 
+                "code" => 500
+            ];
+        }
+    }
 }

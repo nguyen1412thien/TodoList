@@ -97,31 +97,59 @@ async function deleteAccount() {
     }
 }
 
+let allLoginHistory = [];
+
 async function loadHistory() {
     const container = document.getElementById('history-list');
     container.innerHTML = '<div class="text-muted text-sm italic">Đang tải lịch sử...</div>';
 
     const res = await apiCall('/security/actions.php?action=get_history');
     if (res.status === 200 && res.data.success) {
-        if (res.data.data.length === 0) {
-            container.innerHTML = '<div class="text-muted text-sm italic text-center py-8">Chưa ghi nhận lịch sử đăng nhập nào.</div>';
-            return;
-        }
-        container.innerHTML = res.data.data.slice(0, 10).map(log => `
-            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                    </div>
-                    <div>
-                        <div class="font-bold text-dark text-sm">${log.device}</div>
-                        <div class="text-muted text-[10px]">${log.ip}</div>
-                    </div>
-                </div>
-                <div class="text-muted text-xs">${log.time}</div>
-            </div>
-        `).join('');
+        allLoginHistory = res.data.data.slice(0, 10);
+        renderHistoryList(false);
+    } else {
+        container.innerHTML = '<div class="text-muted text-sm italic text-center py-8">Lỗi khi tải lịch sử.</div>';
     }
+}
+
+function renderHistoryList(expanded = false) {
+    const container = document.getElementById('history-list');
+    if (!container) return;
+
+    if (allLoginHistory.length === 0) {
+        container.innerHTML = '<div class="text-muted text-sm italic text-center py-8">Chưa ghi nhận lịch sử đăng nhập nào.</div>';
+        return;
+    }
+
+    const displayLogs = expanded ? allLoginHistory : allLoginHistory.slice(0, 4);
+    
+    let html = displayLogs.map(log => `
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:scale-[1.01] transition-all duration-300 mb-3 last:mb-0">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm border border-gray-100/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-80"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <div>
+                    <div class="font-bold text-dark text-sm">${log.device}</div>
+                    <div class="text-muted text-[10px]">${log.ip}</div>
+                </div>
+            </div>
+            <div class="text-muted text-xs font-semibold">${log.time}</div>
+        </div>
+    `).join('');
+
+    if (allLoginHistory.length > 4 && !expanded) {
+        html += `
+            <div class="text-center mt-4">
+                <button onclick="renderHistoryList(true)" class="btn btn-white text-muted hover-bg-light inline-flex items-center gap-2 border border-gray-200/60 shadow-sm" style="border-radius: 9999px; padding: 0.5rem 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                    <span class="font-black text-[10px] uppercase tracking-wider">Xem thêm (${allLoginHistory.length - 4})</span>
+                </button>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
 }
 
 // Tự động chạy khi HTML đã được load xong
