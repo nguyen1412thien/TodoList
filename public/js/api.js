@@ -1,6 +1,5 @@
-const API_BASE = window.location.pathname.includes('/TodoList/') 
-    ? window.location.origin + '/TodoList/api' 
-    : window.location.origin + '/api';
+// Sử dụng đường dẫn tương đối để tự động tương thích với mọi môi trường (IP, Localhost, Docker)
+const API_BASE = '../../api';
 
 // Token Management
 function getToken() {

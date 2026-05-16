@@ -130,9 +130,9 @@
         </div>
     </div>
     </div>
-    <script src="../js/api.js?v=10"></script>
-    <script src="../js/main.js?v=10"></script>
-    <script src="../js/user.js?v=10"></script>
+    <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
+    <script src="../js/main.js?v=<?php echo filemtime('../js/main.js'); ?>"></script>
+    <script src="../js/user.js?v=<?php echo filemtime('../js/user.js'); ?>"></script>
     <script>
         requireAuth();
         document.addEventListener('DOMContentLoaded', () => {

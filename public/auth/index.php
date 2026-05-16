@@ -77,7 +77,7 @@
 
         
     </div>
-    <script src="../js/api.js?v=10"></script>
-    <script src="../js/auth.js?v=10"></script>
+    <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
+    <script src="../js/auth.js?v=<?php echo filemtime('../js/auth.js'); ?>"></script>
 </body>
 </html>
