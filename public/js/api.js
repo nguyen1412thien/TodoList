@@ -44,13 +44,25 @@ function removeToken() {
     sessionStorage.removeItem('token');
 }
 
-// Kiểm tra quyền Admin
+// Kiểm tra quyền Admin (bao gồm cả superadmin)
 function isAdmin() {
     const token = getToken();
     if (!token) return false;
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.role === 'admin';
+        return payload.role === 'admin' || payload.role === 'superadmin';
+    } catch (e) {
+        return false;
+    }
+}
+
+// Kiểm tra quyền Superadmin
+function isSuperAdmin() {
+    const token = getToken();
+    if (!token) return false;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.role === 'superadmin';
     } catch (e) {
         return false;
     }

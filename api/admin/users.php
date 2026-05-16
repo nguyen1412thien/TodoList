@@ -30,7 +30,7 @@ try {
     $decoded = JWT::decode($jwt, new Key("thien_jwt_secret_key_for_todolist_project", 'HS256'));
     $current_user = (array) $decoded;
 
-    if ($current_user['role'] !== 'admin') {
+    if (!in_array($current_user['role'], ['admin', 'superadmin'])) {
         http_response_code(403);
         echo json_encode(["success" => false, "error" => "Access denied: Admin only"]);
         exit;

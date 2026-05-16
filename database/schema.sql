@@ -50,7 +50,7 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') NOT NULL DEFAULT 'user',
+  `role` enum('user','admin','superadmin') NOT NULL DEFAULT 'user',
   `status` enum('active','locked') NOT NULL DEFAULT 'active',
   `phone` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,

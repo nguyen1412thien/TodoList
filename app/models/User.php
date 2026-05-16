@@ -55,8 +55,8 @@ class User
     public function deleteAccount($id)
     {
         // 1. Sao chép dữ liệu sang bảng deleted_users trước khi xóa
-        $sql_copy = "INSERT INTO deleted_users (old_user_id, name, username, email, phone, role) 
-                     SELECT id, name, username, email, phone, role FROM users WHERE id = ?";
+        $sql_copy = "INSERT INTO deleted_users (old_user_id, name, username, email, password, phone, role, avatar) 
+                     SELECT id, name, username, email, password, phone, role, avatar FROM users WHERE id = ?";
         $stmt_copy = mysqli_prepare($this->conn, $sql_copy);
         mysqli_stmt_bind_param($stmt_copy, "i", $id);
         

@@ -43,7 +43,7 @@
                     <p class="text-muted text-sm font-medium">Quản lý danh sách tài khoản người dùng</p>
                 </div>
             </div>
-            <div class="bg-primary text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black card-shadow">Admin Dashboard</div>
+            <div id="admin-badge" class="bg-primary text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black card-shadow">Admin Dashboard</div>
         </div>
 
         <!-- Users Table Card -->
@@ -79,6 +79,36 @@
             <div>Hệ thống ZenTask v2.0</div>
         </div>
 
+        <!-- Deleted Users Section (Superadmin only) -->
+        <div id="deleted-users-section" class="hidden mt-8">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-red-100 p-2 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </div>
+                <div>
+                    <h2 class="font-black text-dark text-lg tracking-tight">Tài khoản đã xóa</h2>
+                    <p class="text-muted text-xs font-medium">Lưu trữ các tài khoản đã bị xóa khỏi hệ thống</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-3xl card-shadow overflow-hidden border border-red-100 mb-8">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-red-50/50 border-b border-red-100">
+                                <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Người dùng</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-center">Vai trò cũ</th>
+                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest">Ngày xóa</th>
+                                <th class="px-6 py-4 text-right text-[10px] uppercase tracking-widest font-black text-muted">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deleted-users-body">
+                            <tr><td colspan="4" class="px-6 py-10 text-center text-muted text-sm">Đang tải...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- Role Change Modal -->
         <div id="role-modal" class="modal-overlay hidden" style="z-index: 100;">
             <div class="modal-content !max-w-sm text-center">
@@ -99,7 +129,17 @@
                     <button id="btn-set-admin" onclick="confirmRoleChange('admin')" class="flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-gray-50 hover:bg-gray-100 transition-all text-left group">
                         <div>
                             <div class="font-bold text-dark group-hover:text-primary transition-colors">Quản trị viên (Admin)</div>
-                            <div class="text-[10px] text-muted">Toàn quyền hệ thống và quản lý tài khoản.</div>
+                            <div class="text-[10px] text-muted">Quản lý tài khoản user thông thường.</div>
+                        </div>
+                        <div class="radio-circle"></div>
+                    </button>
+                    <button id="btn-set-superadmin" class="hidden flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-amber-50 hover:bg-amber-100 transition-all text-left group" onclick="confirmRoleChange('superadmin')">
+                        <div>
+                            <div class="font-bold text-amber-700 group-hover:text-amber-900 transition-colors flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-amber-500"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                Superadmin
+                            </div>
+                            <div class="text-[10px] text-amber-600">Toàn quyền tuyệt đối, quản lý tất cả.</div>
                         </div>
                         <div class="radio-circle"></div>
                     </button>
@@ -115,7 +155,6 @@
         let currentTargetUserId = null;
         let currentTargetUserRole = null;
 
-        // Bảo mật: Nếu không phải admin thì quay về trang chủ
         if (!isAdmin()) {
             window.location.href = '../../public/main/';
         }
@@ -134,12 +173,71 @@
                 console.error(error);
                 await showDialog('Lỗi hệ thống', error.message, 'error');
             }
+
+            if (isSuperAdmin()) {
+                const badge = document.getElementById('admin-badge');
+                if (badge) {
+                    badge.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="inline-block mr-1 text-white align-middle" style="margin-top: -2px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        Superadmin Dashboard
+                    `;
+                    badge.className = 'bg-amber-500 text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black card-shadow flex items-center gap-1';
+                }
+                const delSec = document.getElementById('deleted-users-section');
+                if (delSec) {
+                    delSec.classList.remove('hidden');
+                }
+                loadDeletedUsers();
+            }
+        }
+
+        async function loadDeletedUsers() {
+            try {
+                const response = await apiCall('/admin/deleted_users.php');
+                const tbody = document.getElementById('deleted-users-body');
+                if (!tbody) return;
+
+                if (response.status === 200 && response.data.success) {
+                    const dUsers = response.data.data;
+                    if (dUsers.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-muted text-sm font-medium">Chưa có tài khoản nào bị xóa</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = dUsers.map(u => `
+                        <tr class="border-b border-red-50 hover:bg-red-50/20 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-dark text-sm">${u.name}</div>
+                                <div class="text-muted text-xs">@${u.username} (${u.email})</div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter bg-gray-100 text-gray-400">${u.role}</span>
+                            </td>
+                            <td class="px-6 py-4 text-xs font-medium text-muted">
+                                ${new Date(u.deleted_at).toLocaleDateString('vi-VN')} ${new Date(u.deleted_at).toLocaleTimeString('vi-VN')}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button onclick="restoreUser(${u.id}, '${u.name}')" 
+                                        class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition-all text-white shadow-sm flex items-center gap-1 ml-auto"
+                                        title="Khôi phục tài khoản này">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+                                    Khôi phục
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-danger font-bold">Lỗi tải dữ liệu</td></tr>`;
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         function renderUsers(users) {
             const body = document.getElementById('user-list-body');
             const count = document.getElementById('total-users-count');
             const myId = JSON.parse(atob(getToken().split('.')[1])).user_id;
+            const isSuper = isSuperAdmin();
             
             count.innerText = `Tổng cộng: ${users.length} tài khoản`;
             
@@ -149,8 +247,7 @@
             }
 
             body.innerHTML = users.map(user => {
-                // Kiểm tra xem có được phép sửa role của người này không
-                const canEdit = (user.role === 'user' || user.id == myId);
+                const canEdit = isSuper ? (user.role !== 'superadmin' || user.id == myId) : (user.role === 'user' || user.id == myId);
                 
                 return `
                 <tr class="border-b border-gray-50 hover:bg-primary-light/20 transition-colors">
@@ -169,8 +266,8 @@
                     </td>
                     <td class="px-6 py-4 text-center">
                         <button 
-                            onclick="${canEdit ? `openRoleModal(${user.id}, '${user.role}', '${user.name}')` : `alert('Bạn không có quyền sửa vai trò của Admin khác!')`}"
-                            class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'} ${canEdit ? 'hover:scale-110 active:scale-95 cursor-pointer shadow-sm' : 'opacity-80 cursor-not-allowed'}"
+                            onclick="${canEdit ? `openRoleModal(${user.id}, '${user.role}', '${user.name}')` : `showDialog('Lỗi quyền hạn', 'Bạn không có quyền sửa vai trò của Admin khác!', 'error')`}"
+                            class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${user.role === 'superadmin' ? 'bg-amber-500 text-white' : (user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400')} ${canEdit ? 'hover:scale-110 active:scale-95 cursor-pointer shadow-sm' : 'opacity-80 cursor-not-allowed'}"
                         >
                             ${user.role}
                         </button>
@@ -179,7 +276,6 @@
                         ${new Date(user.created_at).toLocaleDateString('vi-VN')}
                     </td>
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
-                        <!-- Toggle Status Button -->
                         <button onclick="${canEdit ? `toggleUserStatus(${user.id})` : `showDialog('Lỗi quyền hạn', 'Quyền hạn Admin khác: Không thể thao tác', 'error')`}"
                                 class="p-2 transition-all rounded-xl hover:bg-gray-100 ${canEdit ? (user.status === 'locked' ? 'text-warning' : 'text-success') : 'text-danger cursor-not-allowed'}"
                                 title="${canEdit ? (user.status === 'locked' ? 'Mở khóa tài khoản' : 'Khóa tài khoản') : 'Không thể thao tác'}">
@@ -188,8 +284,6 @@
                                 (canEdit ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`)
                             }
                         </button>
-                        
-                        <!-- Delete User Button -->
                         ${canEdit && user.id != myId ? `
                         <button onclick="deleteUser(${user.id}, '${user.name}')" 
                                 class="p-2 transition-all rounded-xl hover:bg-danger-light text-danger"
@@ -203,7 +297,8 @@
                         `}
                     </td>
                 </tr>
-            `}).join('');
+                `;
+            }).join('');
         }
 
         function openRoleModal(userId, role, name) {
@@ -212,9 +307,16 @@
             document.getElementById('role-modal-desc').innerText = `Thay đổi vai trò cho ${name}`;
             document.getElementById('role-modal').classList.remove('hidden');
             
-            // Highlight vai trò hiện tại
             document.getElementById('btn-set-user').classList.toggle('border-primary', role === 'user');
             document.getElementById('btn-set-admin').classList.toggle('border-primary', role === 'admin');
+            
+            const btnSuper = document.getElementById('btn-set-superadmin');
+            if (isSuperAdmin()) {
+                btnSuper.classList.remove('hidden');
+                btnSuper.classList.toggle('border-amber-500', role === 'superadmin');
+            } else {
+                btnSuper.classList.add('hidden');
+            }
         }
 
         function closeRoleModal() {
@@ -245,7 +347,7 @@
                     closeRoleModal();
                     if (isSelf && newRole === 'user') {
                         await showDialog('Thành công', 'Bạn đã tự hạ quyền. Hệ thống sẽ đăng xuất để cập nhật lại vai trò.', 'success');
-                        logout(); // Gọi hàm logout để xóa Token cũ
+                        logout();
                     } else {
                         loadUsers();
                     }
@@ -291,6 +393,26 @@
                     loadUsers();
                 } else {
                     await showDialog('Lỗi', response.data.error || 'Không thể xóa', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                await showDialog('Lỗi', 'Lỗi kết nối hệ thống', 'error');
+            }
+        }
+
+        async function restoreUser(deletedRecordId, name) {
+            if (!await showConfirm('Xác nhận khôi phục', `Bạn có chắc chắn muốn KHÔI PHỤC tài khoản của ${name} về trạng thái hoạt động bình thường không?`, 'Khôi phục', false)) return;
+
+            try {
+                const response = await apiCall('/admin/restore_user.php', 'POST', {
+                    deleted_record_id: deletedRecordId
+                });
+
+                if (response.status === 200 && response.data.success) {
+                    await showDialog('Thành công', `Đã khôi phục tài khoản ${name} thành công!`, 'success');
+                    loadUsers();
+                } else {
+                    await showDialog('Lỗi', response.data.error || 'Không thể khôi phục', 'error');
                 }
             } catch (error) {
                 console.error(error);
