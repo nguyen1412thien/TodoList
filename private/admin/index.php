@@ -104,6 +104,7 @@
     </div>
 
     <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
+    <script src="../../public/js/dialog.js?v=<?php echo filemtime('../../public/js/dialog.js'); ?>"></script>
     <script>
         let currentTargetUserId = null;
         let currentTargetUserRole = null;
@@ -116,17 +117,16 @@
         async function loadUsers() {
             try {
                 const response = await apiCall('/admin/users.php');
-                // apiCall trả về { status, data }, nên chúng ta phải kiểm tra response.data
                 if (response.status === 200 && response.data.success) {
                     renderUsers(response.data.data);
                 } else {
                     const errorMsg = response.data ? (response.data.error || response.data.message) : 'Lỗi kết nối';
-                    alert('Lỗi: ' + errorMsg);
+                    await showDialog('Lỗi', errorMsg, 'error');
                     document.getElementById('user-list-body').innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-danger font-bold">Lỗi: ${errorMsg}</td></tr>`;
                 }
             } catch (error) {
                 console.error(error);
-                alert('Lỗi hệ thống: ' + error.message);
+                await showDialog('Lỗi hệ thống', error.message, 'error');
             }
         }
 
@@ -173,12 +173,28 @@
                         ${new Date(user.created_at).toLocaleDateString('vi-VN')}
                     </td>
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
-                        <div class="p-2 ${canEdit ? 'text-gray-300' : 'text-danger'}">
-                            ${canEdit ? 
-                                `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Bạn có quyền chỉnh sửa người này"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>` : 
-                                `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Quyền hạn Admin khác: Không thể chỉnh sửa"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`
+                        <!-- Toggle Status Button -->
+                        <button onclick="${canEdit ? `toggleUserStatus(${user.id})` : `showDialog('Lỗi quyền hạn', 'Quyền hạn Admin khác: Không thể thao tác', 'error')`}"
+                                class="p-2 transition-all rounded-xl hover:bg-gray-100 ${canEdit ? (user.status === 'locked' ? 'text-warning' : 'text-success') : 'text-danger cursor-not-allowed'}"
+                                title="${canEdit ? (user.status === 'locked' ? 'Mở khóa tài khoản' : 'Khóa tài khoản') : 'Không thể thao tác'}">
+                            ${user.status === 'locked' ? 
+                                `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>` : 
+                                (canEdit ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`)
                             }
+                        </button>
+                        
+                        <!-- Delete User Button -->
+                        ${canEdit && user.id != myId ? `
+                        <button onclick="deleteUser(${user.id}, '${user.name}')" 
+                                class="p-2 transition-all rounded-xl hover:bg-danger-light text-danger"
+                                title="Xóa tài khoản này">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                        ` : `
+                        <div class="p-2 text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </div>
+                        `}
                     </td>
                 </tr>
             `}).join('');
@@ -209,7 +225,8 @@
             const isSelf = currentTargetUserId == myId;
 
             if (isSelf && newRole === 'user') {
-                if (!confirm("CẢNH BÁO: Bạn đang tự hạ quyền của chính mình. Bạn sẽ bị thoát khỏi trang Admin ngay lập tức. Tiếp tục?")) return;
+                closeRoleModal();
+                if (!await showConfirm('Cảnh báo', 'Bạn đang tự hạ quyền của chính mình. Bạn sẽ bị thoát khỏi trang Admin ngay lập tức. Tiếp tục?', 'Đồng ý hạ quyền', true)) return;
             }
 
             try {
@@ -221,17 +238,57 @@
                 if (response.status === 200 && response.data.success) {
                     closeRoleModal();
                     if (isSelf && newRole === 'user') {
-                        alert('Bạn đã tự hạ quyền. Hệ thống sẽ đăng xuất để cập nhật lại vai trò.');
+                        await showDialog('Thành công', 'Bạn đã tự hạ quyền. Hệ thống sẽ đăng xuất để cập nhật lại vai trò.', 'success');
                         logout(); // Gọi hàm logout để xóa Token cũ
                     } else {
                         loadUsers();
                     }
                 } else {
-                    alert('Lỗi: ' + (response.data.error || 'Không thể cập nhật'));
+                    await showDialog('Lỗi', response.data.error || 'Không thể cập nhật', 'error');
                 }
             } catch (error) {
                 console.error(error);
-                alert('Lỗi kết nối');
+                await showDialog('Lỗi', 'Lỗi kết nối hệ thống', 'error');
+            }
+        }
+
+        async function toggleUserStatus(userId) {
+            if (!await showConfirm('Xác nhận', 'Bạn có muốn thay đổi trạng thái (Khóa/Mở khóa) của tài khoản này không?')) return;
+            
+            try {
+                const response = await apiCall('/admin/update_status.php', 'POST', {
+                    target_user_id: userId
+                });
+
+                if (response.status === 200 && response.data.success) {
+                    loadUsers();
+                } else {
+                    await showDialog('Lỗi', response.data.error || 'Không thể thao tác', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                await showDialog('Lỗi', 'Lỗi kết nối hệ thống', 'error');
+            }
+        }
+
+        async function deleteUser(userId, name) {
+            if (!await showConfirm('CẢNH BÁO', `Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản của ${name}? Toàn bộ dữ liệu của họ sẽ được chuyển vào kho lưu trữ đã xóa.`, 'Tiếp tục', true)) return;
+            if (!await showConfirm('XÁC NHẬN LẦN CUỐI', `Xóa ${name} khỏi hệ thống?`, 'XÓA', true)) return;
+
+            try {
+                const response = await apiCall('/admin/delete_user.php', 'POST', {
+                    target_user_id: userId
+                });
+
+                if (response.status === 200 && response.data.success) {
+                    await showDialog('Thành công', 'Tài khoản đã bị xóa thành công!', 'success');
+                    loadUsers();
+                } else {
+                    await showDialog('Lỗi', response.data.error || 'Không thể xóa', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                await showDialog('Lỗi', 'Lỗi kết nối hệ thống', 'error');
             }
         }
 

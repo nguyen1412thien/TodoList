@@ -52,6 +52,24 @@ class User
         return mysqli_stmt_execute($stmt);
     }
 
+    public function deleteAccount($id)
+    {
+        // 1. Sao chép dữ liệu sang bảng deleted_users trước khi xóa
+        $sql_copy = "INSERT INTO deleted_users (old_user_id, name, username, email, phone, role) 
+                     SELECT id, name, username, email, phone, role FROM users WHERE id = ?";
+        $stmt_copy = mysqli_prepare($this->conn, $sql_copy);
+        mysqli_stmt_bind_param($stmt_copy, "i", $id);
+        
+        if (!mysqli_stmt_execute($stmt_copy)) {
+            return false; // Nếu sao chép thất bại thì dừng luôn để tránh mất dữ liệu
+        }
+
+        // 2. Xóa tài khoản vĩnh viễn khỏi bảng users
+        $stmt_delete = mysqli_prepare($this->conn, "DELETE FROM users WHERE id = ?");
+        mysqli_stmt_bind_param($stmt_delete, "i", $id);
+        return mysqli_stmt_execute($stmt_delete);
+    }
+
     public function findByIdentifier($identifier)
     {
         $sql = "

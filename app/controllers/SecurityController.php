@@ -46,6 +46,15 @@ class SecurityController
         return ["success" => false, "error" => "Lỗi khi khóa tài khoản"];
     }
 
+    // Xóa tài khoản vĩnh viễn
+    public function deleteAccount(): array
+    {
+        if ($this->userModel->deleteAccount($this->current_user_id)) {
+            return ["success" => true, "message" => "Tài khoản đã bị xóa vĩnh viễn"];
+        }
+        return ["success" => false, "error" => "Lỗi khi xóa tài khoản"];
+    }
+
     // Lấy lịch sử đăng nhập (Dữ liệu thật)
     public function getLoginHistory($conn): array
     {

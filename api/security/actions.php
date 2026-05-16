@@ -36,6 +36,9 @@ try {
         case 'lock_account':
             $result = $controller->lockAccount();
             break;
+        case 'delete_account':
+            $result = $controller->deleteAccount();
+            break;
         case 'get_history':
             $result = $controller->getLoginHistory($conn);
             break;

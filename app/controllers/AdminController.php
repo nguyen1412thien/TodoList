@@ -34,7 +34,7 @@ class AdminController
         }
 
         try {
-            $sql = "SELECT id, name, username, email, role, created_at, avatar FROM users ORDER BY created_at DESC";
+            $sql = "SELECT id, name, username, email, role, status, created_at, avatar FROM users ORDER BY created_at DESC";
             $result = mysqli_query($conn, $sql);
             
             if (!$result) {
@@ -110,6 +110,72 @@ class AdminController
                 "error" => "Server error: " . $e->getMessage(),
                 "code" => 500
             ];
+        }
+    }
+
+    // Khóa/Mở khóa người dùng
+    public function toggleUserStatus($conn, int $target_user_id): array
+    {
+        if (!$this->checkAdmin()) {
+            return ["success" => false, "error" => "Admin only", "code" => 403];
+        }
+
+        try {
+            $sql = "SELECT id, role, status FROM users WHERE id = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $target_user_id);
+            mysqli_stmt_execute($stmt);
+            $target_user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+
+            if (!$target_user) {
+                return ["success" => false, "error" => "User not found", "code" => 404];
+            }
+
+            if ($target_user['role'] === 'admin' && (int)$target_user['id'] !== (int)$this->current_user['user_id']) {
+                return ["success" => false, "error" => "Bạn không có quyền khóa Admin khác!", "code" => 403];
+            }
+
+            $new_status = ($target_user['status'] === 'locked') ? 'active' : 'locked';
+            
+            if ($this->userModel->updateStatus($target_user_id, $new_status)) {
+                return ["success" => true, "message" => "Đã " . ($new_status === 'locked' ? "khóa" : "mở khóa") . " tài khoản"];
+            }
+            return ["success" => false, "error" => "Không thể cập nhật trạng thái", "code" => 500];
+
+        } catch (Exception $e) {
+            return ["success" => false, "error" => "Server error", "code" => 500];
+        }
+    }
+
+    // Xóa người dùng (từ Admin)
+    public function deleteUser($conn, int $target_user_id): array
+    {
+        if (!$this->checkAdmin()) {
+            return ["success" => false, "error" => "Admin only", "code" => 403];
+        }
+
+        try {
+            $sql = "SELECT id, role FROM users WHERE id = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $target_user_id);
+            mysqli_stmt_execute($stmt);
+            $target_user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+
+            if (!$target_user) {
+                return ["success" => false, "error" => "User not found", "code" => 404];
+            }
+
+            if ($target_user['role'] === 'admin' && (int)$target_user['id'] !== (int)$this->current_user['user_id']) {
+                return ["success" => false, "error" => "Bạn không có quyền xóa Admin khác!", "code" => 403];
+            }
+
+            if ($this->userModel->deleteAccount($target_user_id)) {
+                return ["success" => true, "message" => "Tài khoản đã bị xóa an toàn"];
+            }
+            return ["success" => false, "error" => "Không thể xóa tài khoản", "code" => 500];
+
+        } catch (Exception $e) {
+            return ["success" => false, "error" => "Server error", "code" => 500];
         }
     }
 }

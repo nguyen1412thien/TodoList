@@ -274,6 +274,7 @@
     
     </div>
     <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
+    <script src="../js/dialog.js?v=<?php echo filemtime('../js/dialog.js'); ?>"></script>
     <script src="../js/main.js?v=<?php echo filemtime('../js/main.js'); ?>"></script>
     <script>
         requireAuth();

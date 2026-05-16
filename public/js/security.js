@@ -43,15 +43,18 @@ async function updatePassword() {
     const old_password = document.getElementById('old-password').value;
     const new_password = document.getElementById('new-password').value;
     
-    if (!old_password || !new_password) return alert('Vui lòng nhập đủ thông tin');
+    if (!old_password || !new_password) {
+        await showDialog('Lỗi', 'Vui lòng nhập đủ thông tin', 'error');
+        return;
+    }
 
     const res = await apiCall('/security/actions.php?action=change_password', 'POST', { old_password, new_password });
     if (res.status === 200 && res.data.success) {
-        alert(res.data.message);
+        await showDialog('Thành công', res.data.message, 'success');
         document.getElementById('old-password').value = '';
         document.getElementById('new-password').value = '';
     } else {
-        alert('Lỗi: ' + (res.data.error || 'Cập nhật thất bại'));
+        await showDialog('Lỗi', res.data.error || 'Cập nhật thất bại', 'error');
     }
 }
 
@@ -62,20 +65,35 @@ async function updateInfo(type) {
 
     const res = await apiCall('/security/actions.php?action=' + endpoint, 'POST', body);
     if (res.status === 200 && res.data.success) {
-        alert(res.data.message);
+        await showDialog('Thành công', res.data.message, 'success');
         loadUserData(); // Tải lại dữ liệu mới
     } else {
-        alert('Lỗi: ' + (res.data.error || 'Cập nhật thất bại'));
+        await showDialog('Lỗi', res.data.error || 'Cập nhật thất bại', 'error');
     }
 }
 
 async function lockAccount() {
-    if (!confirm('Bạn có chắc chắn muốn KHÓA tài khoản của mình? Bạn sẽ bị đăng xuất ngay lập tức!')) return;
+    if (!await showConfirm('Cảnh báo', 'Bạn có chắc chắn muốn KHÓA tài khoản của mình? Bạn sẽ bị đăng xuất ngay lập tức!', 'Khóa tài khoản', true)) return;
 
     const res = await apiCall('/security/actions.php?action=lock_account', 'POST');
     if (res.status === 200 && res.data.success) {
-        alert('Tài khoản đã khóa. Tạm biệt!');
+        await showDialog('Thành công', 'Tài khoản đã khóa. Tạm biệt!', 'success');
         logout();
+    } else {
+        await showDialog('Lỗi', res.data.error || 'Không thể khóa', 'error');
+    }
+}
+
+async function deleteAccount() {
+    if (!await showConfirm('CẢNH BÁO NGUY HIỂM', 'Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản của mình? Toàn bộ dữ liệu công việc sẽ bị xóa theo và KHÔNG THỂ khôi phục!', 'Vẫn Xóa', true)) return;
+    if (!await showConfirm('XÁC NHẬN LẦN CUỐI', 'BẠN THỰC SỰ MUỐN XÓA TÀI KHOẢN NÀY?', 'XÓA', true)) return;
+
+    const res = await apiCall('/security/actions.php?action=delete_account', 'POST');
+    if (res.status === 200 && res.data.success) {
+        await showDialog('Thành công', 'Tài khoản của bạn đã bị xóa vĩnh viễn khỏi hệ thống.', 'success');
+        logout();
+    } else {
+        await showDialog('Lỗi', res.data.error || 'Không thể xóa tài khoản', 'error');
     }
 }
 

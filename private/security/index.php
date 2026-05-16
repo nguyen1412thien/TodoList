@@ -94,14 +94,32 @@
                 <!-- Tab: Danger -->
                 <div id="content-danger" class="tab-content hidden">
                     <h2 class="text-xl font-bold text-danger mb-2">Vùng nguy hiểm</h2>
-                    <p class="text-muted text-sm mb-8">Khi khóa tài khoản, bạn sẽ không thể đăng nhập hoặc thực hiện bất kỳ thao tác nào cho đến khi Admin mở lại.</p>
-                    <button onclick="lockAccount()" class="bg-danger text-white px-8 py-4 rounded-2xl font-bold hover:bg-red-600 transition-all card-shadow shadow-danger/20">KHÓA TÀI KHOẢN TẠM THỜI</button>
+                    <p class="text-muted text-sm mb-8">Các thao tác dưới đây có ảnh hưởng nghiêm trọng đến tài khoản và dữ liệu của bạn. Hãy suy nghĩ thật kỹ trước khi thực hiện.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-red-50 rounded-2xl border border-red-100">
+                            <div>
+                                <div class="font-bold text-red-700">Khóa tài khoản tạm thời</div>
+                                <div class="text-xs text-red-500 mt-1">Bạn sẽ bị đăng xuất và không thể truy cập lại cho đến khi được Admin mở khóa.</div>
+                            </div>
+                            <button onclick="lockAccount()" class="bg-white text-danger px-6 py-2 rounded-xl font-bold hover:bg-danger hover:text-white transition-all border border-danger/20 shadow-sm">KHÓA TẠI ĐÂY</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-200">
+                            <div>
+                                <div class="font-bold text-dark">Xóa vĩnh viễn tài khoản</div>
+                                <div class="text-xs text-muted mt-1">Toàn bộ dữ liệu công việc và tài khoản sẽ bị xóa khỏi hệ thống. Không thể khôi phục!</div>
+                            </div>
+                            <button onclick="deleteAccount()" class="bg-dark text-white px-6 py-2 rounded-xl font-bold hover:bg-black transition-all shadow-sm">XÓA VĨNH VIỄN</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
+    <script src="../../public/js/dialog.js?v=<?php echo filemtime('../../public/js/dialog.js'); ?>"></script>
     <script src="../../public/js/security.js?v=<?php echo filemtime('../../public/js/security.js'); ?>"></script>
 </body>
 </html>
