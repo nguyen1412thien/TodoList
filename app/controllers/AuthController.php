@@ -8,10 +8,12 @@ use Firebase\JWT\JWT;
 class AuthController
 {
     private $userModel;
+    private $conn;
     private $secret_key = "thien_jwt_secret_key_for_todolist_project";
 
     public function __construct($conn)
     {
+        $this->conn = $conn;
         $this->userModel = new User($conn);
     }
 
@@ -58,6 +60,13 @@ class AuthController
             ];
 
             $jwt = JWT::encode($payload, $this->secret_key, 'HS256');
+
+            // Ghi nhật ký đăng nhập
+            $device = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown Device';
+            $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+            $log_stmt = mysqli_prepare($this->conn, "INSERT INTO login_logs (user_id, device, ip) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($log_stmt, "iss", $user["id"], $device, $ip);
+            mysqli_stmt_execute($log_stmt);
 
             return [
                 "success" => true,

@@ -27,6 +27,31 @@ class User
         return $result->fetch_assoc();
     }
 
+    public function findById($id)
+    {
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM users WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        return mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    }
+
+    public function updateSecurityInfo($id, $field, $value)
+    {
+        $allowed_fields = ['email', 'phone', 'password'];
+        if (!in_array($field, $allowed_fields)) return false;
+
+        $stmt = mysqli_prepare($this->conn, "UPDATE users SET $field = ? WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "si", $value, $id);
+        return mysqli_stmt_execute($stmt);
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $stmt = mysqli_prepare($this->conn, "UPDATE users SET status = ? WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "si", $status, $id);
+        return mysqli_stmt_execute($stmt);
+    }
+
     public function findByIdentifier($identifier)
     {
         $sql = "
