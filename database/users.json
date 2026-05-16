@@ -4,7 +4,7 @@
         "name": "admin",
         "username": "admin",
         "email": "nt.thien@example.com",
-        "password": "123456",
+        "password": "$2y$10$L8Kr7NQ5NzbtNN2Or5gd5OUh70YIef2HEG55MHTauBRZK2eK5QD2y",
         "role": "admin",
         "created_at": "2026-05-12 04:49:38",
         "avatar": null

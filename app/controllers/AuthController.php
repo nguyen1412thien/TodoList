@@ -21,15 +21,15 @@ class AuthController
             if (!isset($data["email"]) || !isset($data["password"])) {
                 return [
                     "success" => false,
-                    "error" => "Email and password are required",
+                    "error" => "Email/Username and password are required",
                     "code" => 400
                 ];
             }
 
-            $email = trim($data["email"]);
+            $identifier = trim($data["email"]);
             $password = trim($data["password"]);
 
-            $user = $this->userModel->findByEmail($email);
+            $user = $this->userModel->findByIdentifier($identifier);
 
             if (!$user) {
                 return [

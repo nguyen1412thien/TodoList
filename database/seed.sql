@@ -30,7 +30,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin','nt.thien@example.com','123456','admin','2026-05-12 04:49:38',NULL),(2,'Admin','nguyen1412thien','nguyenthanhthien.1412thien@gmail.com','$2y$10$zck6.WZS7tfHjlcTn9TAA.Q9tpgN4yDUgug1jYbEfTc0wcd7N89va','admin','2026-05-14 03:39:43','uploads/avatars/20231231_003009_177.jpg'),(3,'Nguyen Van An','vanan','vanan@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(4,'Nguyễn Thanh Thiên','user02','nguyenthanhthien2.1412thien@gmail.com','$2y$10$63GYJcJckTPcATssIy4LH.FTu6F/3v8RKFmMT6qIIJAqqOdEL4qL.','user','2026-05-14 11:57:23',NULL),(5,'Tran Minh Khoa','minhkhoa','minhkhoa@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(6,'Le Hoang Phuc','hoangphuc','hoangphuc@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(7,'Pham Gia Bao','giabao','giabao@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(8,'Phanh bò','phanhbocutes1tg','phuonganhnguye01082007@gmail.com','$2y$10$Cjmoub7L/zHjgLPWMC1WleXt1jtqz/eTsazEV.xKqdlA7UB4ep3Ky','user','2026-05-16 02:51:00','uploads/avatars/IMG_1184.jpg');
+INSERT INTO `users` VALUES (1,'admin','admin','nt.thien@example.com','$2y$10$L8Kr7NQ5NzbtNN2Or5gd5OUh70YIef2HEG55MHTauBRZK2eK5QD2y','admin','2026-05-12 04:49:38',NULL),(2,'Admin','nguyen1412thien','nguyenthanhthien.1412thien@gmail.com','$2y$10$zck6.WZS7tfHjlcTn9TAA.Q9tpgN4yDUgug1jYbEfTc0wcd7N89va','admin','2026-05-14 03:39:43','uploads/avatars/20231231_003009_177.jpg'),(3,'Nguyen Van An','vanan','vanan@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(4,'Nguyễn Thanh Thiên','user02','nguyenthanhthien2.1412thien@gmail.com','$2y$10$63GYJcJckTPcATssIy4LH.FTu6F/3v8RKFmMT6qIIJAqqOdEL4qL.','user','2026-05-14 11:57:23',NULL),(5,'Tran Minh Khoa','minhkhoa','minhkhoa@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(6,'Le Hoang Phuc','hoangphuc','hoangphuc@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(7,'Pham Gia Bao','giabao','giabao@gmail.com','123456','user','2026-05-16 02:54:14',NULL),(8,'Phanh bò','phanhbocutes1tg','phuonganhnguye01082007@gmail.com','$2y$10$Cjmoub7L/zHjgLPWMC1WleXt1jtqz/eTsazEV.xKqdlA7UB4ep3Ky','user','2026-05-16 02:51:00','uploads/avatars/IMG_1184.jpg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -42,4 +42,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-16 18:52:01
+-- Dump completed on 2026-05-16 18:56:29

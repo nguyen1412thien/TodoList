@@ -27,6 +27,23 @@ class User
         return $result->fetch_assoc();
     }
 
+    public function findByIdentifier($identifier)
+    {
+        $sql = "
+        SELECT *
+        FROM $this->table
+        WHERE email = ? OR username = ?
+        LIMIT 1
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ss", $identifier, $identifier);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
     public function create($name, $username, $email, $password)
     {
         $sql = "
