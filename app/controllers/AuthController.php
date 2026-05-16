@@ -131,7 +131,7 @@ class AuthController
         } catch (Exception $e) {
             return [
                 "success" => false,
-                "error" => "Server error",
+                "error" => "Server error: " . $e->getMessage(),
                 "code" => 500
             ];
         }

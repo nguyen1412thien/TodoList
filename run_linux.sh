@@ -8,12 +8,12 @@ fi
 
 echo "--- Đang khởi động ZenTask (Docker) ---"
 
-# Khởi động các container
-docker-compose up -d
+# Khởi động các container và build lại
+docker-compose up -d --build
 
 echo "Đang đợi cơ sở dữ liệu sẵn sàng..."
-sleep 10
+sleep 15
 
 # Mở trình duyệt
-echo "Đã xong! Mở ứng dụng tại: http://localhost:8080"
-open http://localhost:8080
+echo "Đã xong! Mở ứng dụng tại: http://localhost:8088"
+open http://localhost:8088

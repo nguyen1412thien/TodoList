@@ -1,0 +1,8 @@
+FROM mysql:8.0
+
+# Copy các file SQL vào thư mục khởi tạo của MySQL
+COPY ./database/schema.sql /docker-entrypoint-initdb.d/1_schema.sql
+COPY ./database/seed.sql /docker-entrypoint-initdb.d/2_seed.sql
+
+# Đảm bảo sử dụng plugin mật khẩu cũ để PHP kết nối được
+CMD ["--default-authentication-plugin=mysql_native_password"]

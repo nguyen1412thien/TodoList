@@ -16,13 +16,13 @@ if (!$data || !is_array($data)) {
     exit;
 }
 
-$controller = new AuthController($conn);
-$result = $controller->register($data);
-
-http_response_code($result["code"] ?? ($result["success"] ? 201 : 400));
-
-if ($result["success"]) {
-    echo json_encode(["message" => $result["message"]]);
-} else {
-    echo json_encode(["error" => $result["error"]]);
+try {
+    $controller = new AuthController($conn);
+    $result = $controller->register($data);
+    
+    http_response_code($result["code"] ?? ($result["success"] ? 201 : 400));
+    echo json_encode($result["success"] ? ["message" => $result["message"]] : ["error" => $result["error"]]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => "Server error: " . $e->getMessage()]);
 }

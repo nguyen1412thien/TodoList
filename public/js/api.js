@@ -1,4 +1,6 @@
-const API_BASE = window.location.origin + '/TodoList/api';
+const API_BASE = window.location.pathname.includes('/TodoList/') 
+    ? window.location.origin + '/TodoList/api' 
+    : window.location.origin + '/api';
 
 // Token Management
 function getToken() {

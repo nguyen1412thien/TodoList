@@ -16,15 +16,15 @@ echo "----------------------------------------------------"
 echo "   ĐANG KHỞI ĐỘNG ZENTASK (DOCKER MODE)             "
 echo "----------------------------------------------------"
 
-# Khởi động các container
-docker-compose up -d
+# Khởi động các container và build lại image nếu có thay đổi
+docker-compose up -d --build
 
-echo "Đang khởi tạo hệ thống (vui lòng đợi 10 giây)..."
-sleep 10
+echo "Đang khởi tạo hệ thống (vui lòng đợi 15 giây)..."
+sleep 15
 
 # Mở trình duyệt
-echo "Xong! Đang mở ứng dụng tại http://localhost:8080"
-open http://localhost:8080
+echo "Đã xong! Mở ứng dụng tại: http://localhost:8088"
+open http://localhost:8088
 
 echo "----------------------------------------------------"
 echo "Ứng dụng đang chạy ngầm. Bạn có thể đóng cửa sổ này."
