@@ -107,7 +107,7 @@ async function loadHistory() {
             container.innerHTML = '<div class="text-muted text-sm italic text-center py-8">Chưa ghi nhận lịch sử đăng nhập nào.</div>';
             return;
         }
-        container.innerHTML = res.data.data.map(log => `
+        container.innerHTML = res.data.data.slice(0, 10).map(log => `
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
                 <div class="flex items-center gap-4">
                     <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm">

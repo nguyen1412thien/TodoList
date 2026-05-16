@@ -147,7 +147,7 @@
                         <span id="done-count" class="text-sm font-bold text-dark">0</span>
                     </div>
                 </div>
-                <span class="form-label" style="margin: 0; color: #d1d5db;">PROJECT BY 14DEC</span>
+                <span class="form-label" style="margin: 0; color: #cbd5e1; font-weight: 800; letter-spacing: 0.05em;">PROJECT OF 14 DEC</span>
             </footer>
         </div>
     

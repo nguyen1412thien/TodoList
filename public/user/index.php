@@ -104,18 +104,23 @@
             <!-- Admin Section -->
             <div id="admin-section" class="hidden">
                 <h3 class="font-bold text-dark mb-4 text-xs uppercase tracking-widest text-muted">Quản trị hệ thống</h3>
-                <div class="setting-item card card-shadow flex items-center justify-between p-5 mb-8 bg-primary-light border border-primary/10" onclick="window.location.href='../../private/admin/'" style="cursor: pointer;">
+                <div id="admin-card" class="setting-item card card-shadow flex items-center justify-between p-5 mb-8 bg-primary-light border border-primary/10" onclick="window.location.href='../../private/admin/'" style="cursor: pointer;">
                     <div class="flex items-center gap-3">
-                        <div class="text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-                        <span class="font-bold text-primary">Quản lý tài khoản</span>
+                        <div id="admin-card-icon" class="text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                        <span id="admin-card-text" class="font-bold text-primary">Quản lý tài khoản</span>
                     </div>
-                    <div class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-tighter font-black">Admin</div>
+                    <div id="admin-badge-text" class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-tighter font-black">Admin</div>
                 </div>
             </div>
             
             <button onclick="logout()" class="btn btn-block font-bold text-danger uppercase tracking-widest mb-10 btn-logout">
                 Đăng xuất tài khoản
             </button>
+
+            <!-- Footer -->
+            <footer class="flex justify-end items-center mt-8 pb-4" style="border-top: 1px solid var(--border-light); pt-6">
+                <span class="text-[10px] font-bold tracking-widest uppercase" style="color: #cbd5e1; letter-spacing: 0.05em; margin-top: 1rem;">PROJECT OF 14 DEC</span>
+            </footer>
         </div>
     </div>
 
@@ -151,6 +156,26 @@
             if (isAdmin()) {
                 const adminSection = document.getElementById('admin-section');
                 if (adminSection) adminSection.classList.remove('hidden');
+
+                if (isSuperAdmin()) {
+                    const badgeText = document.getElementById('admin-badge-text');
+                    if (badgeText) {
+                        badgeText.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor" class="inline-block mr-0.5 text-white align-middle" style="margin-top: -2px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            Superadmin
+                        `;
+                        badgeText.className = "bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full uppercase tracking-tighter font-black flex items-center gap-0.5";
+                        
+                        const adminCard = document.getElementById('admin-card');
+                        if (adminCard) {
+                            adminCard.className = "setting-item card card-shadow flex items-center justify-between p-5 mb-8 bg-amber-50/50 border border-amber-200/50";
+                            const adminCardIcon = document.getElementById('admin-card-icon');
+                            if (adminCardIcon) adminCardIcon.className = "text-amber-500";
+                            const adminCardText = document.getElementById('admin-card-text');
+                            if (adminCardText) adminCardText.className = "font-bold text-amber-700";
+                        }
+                    }
+                }
             }
             fetchTodos().then(() => showProfile());
         });

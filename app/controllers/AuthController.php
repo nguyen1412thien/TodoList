@@ -72,7 +72,17 @@ class AuthController
 
             // Ghi nhật ký đăng nhập
             $device = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown Device';
-            $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+            
+            $ip = '0.0.0.0';
+            if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                $ip = trim($ips[0]);
+            } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+
             $log_stmt = mysqli_prepare($this->conn, "INSERT INTO login_logs (user_id, device, ip) VALUES (?, ?, ?)");
             if ($log_stmt) {
                 mysqli_stmt_bind_param($log_stmt, "iss", $user["id"], $device, $ip);

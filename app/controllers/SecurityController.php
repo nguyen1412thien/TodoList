@@ -74,11 +74,18 @@ class SecurityController
             else if (strpos($ua, 'iPhone') !== false) $device = "iPhone";
             else if (strpos($ua, 'Android') !== false) $device = "Điện thoại Android";
 
+            $ipDisplay = $row['ip'];
+            if ($ipDisplay === '::1' || $ipDisplay === '127.0.0.1') {
+                $ipDisplay = '127.0.0.1 (Localhost)';
+            } elseif (empty($ipDisplay)) {
+                $ipDisplay = 'Không rõ IP';
+            }
+
             $logs[] = [
                 "id" => $row['id'],
                 "device" => $device,
                 "full_ua" => $ua,
-                "ip" => $row['ip'],
+                "ip" => $ipDisplay,
                 "time" => $row['created_at']
             ];
         }

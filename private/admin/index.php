@@ -74,9 +74,11 @@
         </div>
 
         <!-- Footer Stats -->
-        <div class="mt-8 flex justify-between items-center text-muted text-xs font-bold uppercase tracking-widest px-4">
-            <div id="total-users-count">Tổng cộng: 0 tài khoản</div>
-            <div>Hệ thống ZenTask v2.0</div>
+        <div class="mt-6 px-4">
+            <div id="total-users-count" class="inline-flex items-center gap-2 bg-primary-light text-primary px-4 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider shadow-sm border border-primary/10 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="opacity-95"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Tổng cộng: <strong class="text-sm font-black text-primary" id="total-users-number">0</strong> tài khoản</span>
+            </div>
         </div>
 
         <!-- Deleted Users Section (Superadmin only) -->
@@ -109,11 +111,16 @@
             </div>
         </div>
 
+        <!-- Footer -->
+        <footer class="flex justify-end items-center mt-12 pb-4" style="border-top: 1px solid var(--border-light); pt-6">
+            <span class="text-[10px] font-bold tracking-widest uppercase" style="color: #cbd5e1; letter-spacing: 0.05em; margin-top: 1rem;">PROJECT OF 14 DEC</span>
+        </footer>
+
         <!-- Role Change Modal -->
         <div id="role-modal" class="modal-overlay hidden" style="z-index: 100;">
             <div class="modal-content !max-w-sm text-center">
                 <div class="bg-primary/10 mx-auto mb-4 flex items-center justify-center text-primary" style="width: 4rem; height: 4rem; border-radius: 50%;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 </div>
                 <h2 class="font-bold text-dark text-xl mb-2">Thay đổi vai trò</h2>
                 <p id="role-modal-desc" class="text-muted text-sm mb-6">Chọn vai trò mới cho người dùng này.</p>
@@ -121,14 +128,14 @@
                 <div class="flex flex-col gap-3 mb-6">
                     <button id="btn-set-user" onclick="confirmRoleChange('user')" class="flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-gray-50 hover:bg-gray-100 transition-all text-left group">
                         <div>
-                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Người dùng (User)</div>
+                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Người dùng</div>
                             <div class="text-[10px] text-muted">Quyền hạn cơ bản, chỉ quản lý task cá nhân.</div>
                         </div>
                         <div class="radio-circle"></div>
                     </button>
                     <button id="btn-set-admin" onclick="confirmRoleChange('admin')" class="flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-gray-50 hover:bg-gray-100 transition-all text-left group">
                         <div>
-                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Quản trị viên (Admin)</div>
+                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Quản trị viên</div>
                             <div class="text-[10px] text-muted">Quản lý tài khoản user thông thường.</div>
                         </div>
                         <div class="radio-circle"></div>
@@ -137,9 +144,9 @@
                         <div>
                             <div class="font-bold text-amber-700 group-hover:text-amber-900 transition-colors flex items-center gap-1.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-amber-500"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                Superadmin
+                                Quản trị viên tối cao
                             </div>
-                            <div class="text-[10px] text-amber-600">Toàn quyền tuyệt đối, quản lý tất cả.</div>
+                            <div class="text-[10px] text-amber-600">Toàn quyền tuyệt đối, quản lý toàn bộ hệ thống.</div>
                         </div>
                         <div class="radio-circle"></div>
                     </button>
@@ -239,7 +246,12 @@
             const myId = JSON.parse(atob(getToken().split('.')[1])).user_id;
             const isSuper = isSuperAdmin();
             
-            count.innerText = `Tổng cộng: ${users.length} tài khoản`;
+            const numberSpan = document.getElementById('total-users-number');
+            if (numberSpan) {
+                numberSpan.innerText = users.length;
+            } else {
+                count.innerText = `Tổng cộng: ${users.length} tài khoản`;
+            }
             
             if (users.length === 0) {
                 body.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-muted">Không có người dùng nào</td></tr>';
@@ -248,6 +260,7 @@
 
             body.innerHTML = users.map(user => {
                 const canEdit = isSuper ? (user.role !== 'superadmin' || user.id == myId) : (user.role === 'user' || user.id == myId);
+                const canChangeRole = isSuper && (user.role !== 'superadmin' || user.id == myId);
                 
                 return `
                 <tr class="border-b border-gray-50 hover:bg-primary-light/20 transition-colors">
@@ -266,10 +279,10 @@
                     </td>
                     <td class="px-6 py-4 text-center">
                         <button 
-                            onclick="${canEdit ? `openRoleModal(${user.id}, '${user.role}', '${user.name}')` : `showDialog('Lỗi quyền hạn', 'Bạn không có quyền sửa vai trò của Admin khác!', 'error')`}"
-                            class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${user.role === 'superadmin' ? 'bg-amber-500 text-white' : (user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400')} ${canEdit ? 'hover:scale-110 active:scale-95 cursor-pointer shadow-sm' : 'opacity-80 cursor-not-allowed'}"
+                            onclick="${canChangeRole ? `openRoleModal(${user.id}, '${user.role}', '${user.name}')` : `showDialog('Lỗi quyền hạn', 'Chỉ Quản trị viên tối cao mới có quyền thay đổi vai trò!', 'error')`}"
+                            class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${user.role === 'superadmin' ? 'bg-amber-500 text-white' : (user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400')} ${canChangeRole ? 'hover:scale-110 active:scale-95 cursor-pointer shadow-sm' : 'opacity-80 cursor-not-allowed'}"
                         >
-                            ${user.role}
+                            ${user.role === 'superadmin' ? 'Quản trị tối cao' : (user.role === 'admin' ? 'Quản trị viên' : 'Người dùng')}
                         </button>
                     </td>
                     <td class="px-6 py-4 text-xs font-medium text-muted">

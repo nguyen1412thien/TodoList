@@ -77,7 +77,10 @@
             </div>
         </div>
 
-        
+        <!-- Footer -->
+        <footer class="flex justify-end items-center mt-8 pb-4">
+            <span class="text-[10px] font-bold tracking-widest uppercase" style="color: #cbd5e1; letter-spacing: 0.05em;">PROJECT OF 14 DEC</span>
+        </footer>
     </div>
     <script src="../js/auth.js?v=<?php echo filemtime('../js/auth.js'); ?>"></script>
 </body>

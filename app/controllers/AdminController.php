@@ -66,8 +66,8 @@ class AdminController
     // Cập nhật quyền người dùng
     public function updateUserRole($conn, int $target_user_id, string $new_role): array
     {
-        if (!$this->checkAdmin()) {
-            return ["success" => false, "error" => "Admin only", "code" => 403];
+        if (!$this->isSuperAdmin()) {
+            return ["success" => false, "error" => "Chỉ Quản trị viên tối cao mới có quyền thay đổi vai trò!", "code" => 403];
         }
 
         try {
