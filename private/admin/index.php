@@ -46,9 +46,9 @@
                     <thead>
                         <tr class="bg-primary-light/50 border-b border-primary/10">
                             <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Người dùng</th>
-                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Vai trò</th>
-                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Ngày tham gia</th>
-                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-right">Thao tác</th>
+                            <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-center">Vai trò</th>
+                            <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-left">Ngày tham gia</th>
+                            <th class="px-6 py-4 text-right"></th>
                         </tr>
                     </thead>
                     <tbody id="user-list-body">
@@ -173,9 +173,12 @@
                         ${new Date(user.created_at).toLocaleDateString('vi-VN')}
                     </td>
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
-                        <button class="text-muted hover:text-danger p-2 transition-colors" title="Khóa tài khoản">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        </button>
+                        <div class="p-2 ${canEdit ? 'text-gray-300' : 'text-danger'}">
+                            ${canEdit ? 
+                                `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Bạn có quyền chỉnh sửa người này"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>` : 
+                                `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Quyền hạn Admin khác: Không thể chỉnh sửa"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`
+                            }
+                        </div>
                     </td>
                 </tr>
             `}).join('');
