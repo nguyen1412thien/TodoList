@@ -56,6 +56,14 @@
                 </div>
             </div>
             
+            <!-- Recent Activity -->
+            <div class="mb-8">
+                <h3 class="font-bold text-dark mb-4 text-xs uppercase tracking-widest text-muted">Hoạt động gần đây</h3>
+                <div id="recent-activity-list">
+                    <!-- JS will populate this -->
+                </div>
+            </div>
+            
             <!-- Settings & Locked Features -->
             <div class="card mb-8 p-0 border-0 card-shadow overflow-hidden">
                 <div class="setting-item flex items-center justify-between p-4 border-b border-light locked-feature" title="Tính năng thông báo đang được phát triển">
@@ -80,11 +88,24 @@
         </div>
     </div>
 
+    <!-- All Activities Modal -->
+    <div id="all-activities-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-height: 80vh; display: flex; flex-direction: column;">
+            <h2 class="font-bold text-xl text-dark mb-4">Tất cả hoạt động</h2>
+            <div id="all-activities-list" style="overflow-y: auto; flex-grow: 1; padding-right: 0.5rem;" class="mb-4">
+                <!-- JS will populate all tasks here -->
+            </div>
+            <div class="flex justify-end mt-2">
+                <button type="button" class="btn btn-cancel px-6 py-2 rounded-xl font-bold" onclick="closeAllActivitiesModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
     
     </div>
     <script src="../js/api.js"></script>
-    <script src="../js/todo.js"></script>
-    <script src="../js/user.js"></script>
+    <script src="../js/todo.js?v=2"></script>
+    <script src="../js/user.js?v=2"></script>
     <script>
         requireAuth();
         document.addEventListener('DOMContentLoaded', () => {
