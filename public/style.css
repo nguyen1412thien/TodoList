@@ -678,3 +678,117 @@ textarea.form-input {
 .setting-item:hover {
     border-color: var(--border-focus);
 }
+
+/* ================= Responsive Fixes ================= */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    /* Scaling down ZenTask Logo - Increased slightly as requested */
+    .logo-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.75rem;
+    }
+
+    .logo-icon-sm {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    
+    .logo-icon svg, .logo-icon-sm svg {
+        width: 22px;
+        height: 22px;
+    }
+
+
+    /* Hide ZenTask text in Header */
+    header h1 {
+        display: none !important;
+    }
+
+    /* Scaling down User Widget Avatar */
+    .avatar-box {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.5rem;
+    }
+
+    .avatar-box svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .avatar-badge {
+        width: 0.875rem;
+        height: 0.875rem;
+        border: 2px solid #fff;
+    }
+
+    .profile-widget {
+        padding: 0.4rem !important;
+        border-radius: 50% !important;
+        width: 3rem !important;
+        height: 3rem !important;
+        justify-content: center;
+        display: inline-flex !important;
+    }
+
+    /* Hide User Info Block (Name, Level, Streak) */
+    .profile-widget .flex.items-center.gap-4 > div:last-child {
+        display: none !important;
+    }
+
+    .profile-widget .flex.items-center.gap-4 {
+        gap: 0 !important;
+    }
+
+    /* Scaling down action buttons in header */
+    .btn-icon.btn-white.card-shadow {
+        width: 2.75rem !important;
+        height: 2.75rem !important;
+        border-radius: 0.75rem !important;
+    }
+
+    /* Profile Page Adjustments */
+    .profile-avatar-large {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 1.25rem;
+    }
+
+    .profile-avatar-large svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .profile-main-card {
+        padding: 1.5rem;
+        border-radius: 2rem;
+    }
+
+    .stats-grid {
+        gap: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+        border-radius: 1.25rem;
+    }
+
+    /* Text adjustments */
+    .todo-title {
+        font-size: 0.8125rem;
+    }
+
+    #widget-user-name {
+        font-size: 1rem !important;
+    }
+}
+
+
