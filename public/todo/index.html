@@ -10,40 +10,40 @@
     <div id="app" class="container">
 
         <div id="todo-section">
-            <!-- User Profile Widget (Trigger) -->
-            <div class="profile-widget card-shadow mb-10 flex items-center justify-between" onclick="window.location.href='../user/'">
-                <div class="flex items-center gap-4">
-                    <div class="avatar-container relative">
-                        <div class="avatar-box bg-gradient-primary flex items-center justify-center text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center mb-10 gap-4" style="flex-wrap: wrap;">
+                <!-- Header -->
+                <header>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="logo-icon logo-icon-sm flex items-center justify-center text-white bg-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         </div>
-                        <div class="avatar-badge bg-success absolute flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </div>
+                        <h1 class="font-bold tracking-widest text-dark" style="font-size: 1.875rem; letter-spacing: -0.025em;">ZenTask</h1>
                     </div>
-                    <div>
-                        <h2 id="widget-user-name" class="font-bold text-dark tracking-tight leading-none mb-1 text-lg">Tên người dùng</h2>
-                        <div class="flex items-center gap-3">
-                            <span class="badge-level font-bold text-primary bg-primary-light locked-feature-text" title="Sắp ra mắt">Lv. 0</span>
-                            <span class="badge-streak font-bold text-muted locked-feature-text" title="Sắp ra mắt">🔥 0 Day</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn-icon text-muted hover-bg-light" style="background:transparent; border:none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                </button>
-            </div>
+                    <p class="text-muted font-medium text-sm ml-13" style="margin-bottom: 0;">Stay focused and get things done.</p>
+                </header>
 
-            <!-- Header -->
-            <header class="mb-10">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="logo-icon logo-icon-sm flex items-center justify-center text-white bg-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <!-- User Profile Widget (Trigger) -->
+                <div class="profile-widget card-shadow inline-flex items-center" onclick="window.location.href='../user/'" style="padding: 0.75rem 1.25rem; cursor: pointer;">
+                    <div class="flex items-center gap-4">
+                        <div class="avatar-container relative">
+                            <div class="avatar-box bg-gradient-primary flex items-center justify-center text-white" style="width: 3rem; height: 3rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div class="avatar-badge bg-success absolute flex items-center justify-center" style="width: 1.25rem; height: 1.25rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 id="widget-user-name" class="font-bold text-dark tracking-tight leading-none mb-1" style="font-size: 1rem;">Tên người dùng</h2>
+                            <div class="flex items-center gap-2">
+                                <span class="badge-level font-bold text-primary bg-primary-light locked-feature-text" title="Sắp ra mắt" style="font-size: 0.5rem;">Lv. 0</span>
+                                <span class="badge-streak font-bold text-muted locked-feature-text" title="Sắp ra mắt" style="font-size: 0.5rem;">🔥 0 Day</span>
+                            </div>
+                        </div>
                     </div>
-                    <h1 class="font-bold tracking-widest text-dark" style="font-size: 1.875rem; letter-spacing: -0.025em;">ZenTask</h1>
                 </div>
-                <p class="text-muted font-medium text-sm ml-13">Stay focused and get things done.</p>
-            </header>
+            </div>
 
             <!-- Input Area -->
             <div class="card mb-8">

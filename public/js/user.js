@@ -1,28 +1,37 @@
 // Profile Logic
 function showProfile() {
-    document.getElementById('todo-section').classList.add('hidden');
-    document.getElementById('profile-section').classList.remove('hidden');
+    const todoSection = document.getElementById('todo-section');
+    const profileSection = document.getElementById('profile-section');
+    
+    if (todoSection) todoSection.classList.add('hidden');
+    if (profileSection) profileSection.classList.remove('hidden');
     
     // Set user profile data
-    const name = currentUser.name || currentUser.username;
-    document.getElementById('profile-user-name').textContent = name;
+    const name = currentUser.name;
+    const profileNameEl = document.getElementById('profile-user-name');
+    if (profileNameEl) profileNameEl.textContent = name;
     
     // Count completed tasks
     const completedTasks = currentTodos.filter(t => t.status === 'completed').length;
-    document.getElementById('profile-completed-count').textContent = completedTasks;
+    const completedCountEl = document.getElementById('profile-completed-count');
+    if (completedCountEl) completedCountEl.textContent = completedTasks;
     
     // Simulate user join date
-    document.getElementById('profile-user-date').textContent = "Thành viên từ " + new Date().toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
+    const dateEl = document.getElementById('profile-user-date');
+    if (dateEl) dateEl.textContent = "Thành viên từ " + new Date().toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' });
 }
 
 function hideProfile() {
-    document.getElementById('profile-section').classList.add('hidden');
-    document.getElementById('todo-section').classList.remove('hidden');
+    const todoSection = document.getElementById('todo-section');
+    const profileSection = document.getElementById('profile-section');
+    
+    if (profileSection) profileSection.classList.add('hidden');
+    if (todoSection) todoSection.classList.remove('hidden');
 }
 
 // Update widget profile name
 function updateWidgetProfile() {
     if (currentUser) {
-        document.getElementById('widget-user-name').textContent = currentUser.name || currentUser.username;
+        document.getElementById('widget-user-name').textContent = currentUser.name;
     }
 }

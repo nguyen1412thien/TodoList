@@ -67,8 +67,10 @@ async function fetchTodos() {
         currentUser = data.user;
         currentTodos = data.todos;
         
-        let usernameDisplay = currentUser.name || currentUser.username;
-        updateWidgetProfile();
+        let usernameDisplay = currentUser.name;
+        if (document.getElementById('widget-user-name')) {
+            document.getElementById('widget-user-name').textContent = usernameDisplay;
+        }
         
         renderTodos();
     } else {
@@ -82,7 +84,6 @@ async function fetchTodos() {
 
 function renderTodos() {
     const listDiv = document.getElementById('todos-list');
-    listDiv.innerHTML = '';
 
     let filteredTodos = currentTodos;
     if (currentFilter !== 'all') {
@@ -95,13 +96,16 @@ function renderTodos() {
     const totalCount = currentTodos.length;
     const progress = totalCount === 0 ? 0 : Math.round((doneCount / totalCount) * 100);
 
-    document.getElementById('active-count').textContent = activeCount;
-    document.getElementById('done-count').textContent = doneCount;
-    document.getElementById('progress-text').textContent = `${progress}%`;
+    if (document.getElementById('active-count')) document.getElementById('active-count').textContent = activeCount;
+    if (document.getElementById('done-count')) document.getElementById('done-count').textContent = doneCount;
+    if (document.getElementById('progress-text')) document.getElementById('progress-text').textContent = `${progress}%`;
     
     // Update profile view stats
     const completedTasksElem = document.getElementById('profile-completed-count');
     if (completedTasksElem) completedTasksElem.textContent = doneCount;
+
+    if (!listDiv) return; // Stop here if there is no list to render to
+    listDiv.innerHTML = '';
 
     if (filteredTodos.length === 0) {
         listDiv.innerHTML = '<div class="text-center text-muted text-sm font-medium pt-8">Không có công việc nào.</div>';

@@ -676,9 +676,7 @@ textarea.form-input {
     transition: all 0.3s ease;
 }
 .profile-widget:hover {
-    border-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.08);
+    border-color: var(--border-focus);
 }
 .avatar-container {
     position: relative;
@@ -720,6 +718,10 @@ textarea.form-input {
     padding: 2rem;
     border: 1px solid var(--border-light);
     overflow: hidden;
+    transition: all 0.2s;
+}
+.profile-main-card:hover {
+    border-color: var(--border-focus);
 }
 .profile-card-bg-deco {
     top: 0;
@@ -763,6 +765,10 @@ textarea.form-input {
     background: #fff;
     border-radius: 1.5rem;
     border: 1px solid var(--border-light);
+    transition: all 0.2s;
+}
+.stat-card:hover {
+    border-color: var(--border-focus);
 }
 .stat-icon-container {
     width: 2.5rem;
@@ -802,4 +808,24 @@ textarea.form-input {
 .btn-white {
     background-color: #fff;
     border: 1px solid var(--border-light);
+    transition: all 0.2s;
+}
+.btn-white:hover {
+    border-color: var(--border-focus);
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid var(--color-danger) !important;
+    transition: all 0.2s;
+}
+.btn-logout:hover {
+    border-color: var(--border-focus) !important;
+}
+
+.setting-item {
+    transition: all 0.2s;
+}
+.setting-item:hover {
+    border-color: var(--border-focus);
 }
