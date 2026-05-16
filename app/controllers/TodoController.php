@@ -78,6 +78,7 @@ class TodoController
                 
             $due_date =
                 $data["due_date"] ?? null;
+            if ($due_date === "") $due_date = null;
 
             $created = $this->todoModel->create(
                 $user_id,
@@ -104,7 +105,7 @@ class TodoController
             ];
 
         } catch (Exception $e) {
-
+            error_log("TodoController store error: " . $e->getMessage());
             return [
                 "success" => false,
                 "error" => "Server error",
@@ -185,12 +186,17 @@ class TodoController
             $priority =
                 $data["priority"] ?? "medium";
 
+            $due_date =
+                $data["due_date"] ?? null;
+            if ($due_date === "") $due_date = null;
+
             $updated = $this->todoModel->update(
                 $id,
                 $title,
                 $description,
                 $status,
-                $priority
+                $priority,
+                $due_date
             );
 
             if (!$updated) {
@@ -209,7 +215,7 @@ class TodoController
             ];
 
         } catch (Exception $e) {
-
+            error_log("TodoController update error: " . $e->getMessage());
             return [
                 "success" => false,
                 "error" => "Server error",

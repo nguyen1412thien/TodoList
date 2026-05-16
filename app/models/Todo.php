@@ -41,7 +41,8 @@ class Todo
         $title,
         $description,
         $status,
-        $priority
+        $priority,
+        $due_date = null
     ) {
         $sql = "
         UPDATE $this->table
@@ -49,17 +50,19 @@ class Todo
             title = ?,
             description = ?,
             status = ?,
-            priority = ?
+            priority = ?,
+            due_date = ?
         WHERE id = ?
         ";
         $stmt = mysqli_prepare($this->conn, $sql);
         mysqli_stmt_bind_param(
             $stmt,
-            "ssssi",
+            "sssssi",
             $title,
             $description,
             $status,
             $priority,
+            $due_date,
             $id
         );
         return mysqli_stmt_execute($stmt);
