@@ -369,6 +369,10 @@ textarea.form-input {
 }
 .btn-delete:hover { color: var(--color-danger); }
 
+.btn-link:hover {
+    color: var(--primary);
+}
+
 /* Modal */
 .modal-overlay {
     position: fixed;

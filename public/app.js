@@ -112,6 +112,12 @@ function logout() {
     showLogin();
 }
 
+function goToProfile() {
+    // Placeholder function for navigation to the user profile page.
+    // Replace this with actual navigation logic when the profile page is built.
+    alert("Chức năng đang được phát triển. Sẽ chuyển hướng đến trang tài khoản cá nhân của: " + (currentUser.name || currentUser.username));
+}
+
 // Todo Priority UI handling
 function setNewPriority(priority, btnElement) {
     document.getElementById('new-priority-value').value = priority;
