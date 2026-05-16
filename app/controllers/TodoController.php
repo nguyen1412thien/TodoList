@@ -70,10 +70,22 @@ class TodoController
             $description =
                 $data["description"] ?? "";
 
+            $status =
+                $data["status"] ?? "pending";
+                
+            $priority =
+                $data["priority"] ?? "medium";
+                
+            $due_date =
+                $data["due_date"] ?? null;
+
             $created = $this->todoModel->create(
                 $user_id,
                 $title,
-                $description
+                $description,
+                $status,
+                $priority,
+                $due_date
             );
 
             if (!$created) {

@@ -27,10 +27,11 @@ class User
         return $result->fetch_assoc();
     }
 
-    public function create($username, $email, $password)
+    public function create($name, $username, $email, $password)
     {
         $sql = "
         INSERT INTO $this->table (
+            name,
             username,
             email,
             password
@@ -38,12 +39,13 @@ class User
         VALUES (
             ?,
             ?,
+            ?,
             ?
         )
         ";
         
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sss", $username, $email, $password);
+        $stmt->bind_param("ssss", $name, $username, $email, $password);
         return $stmt->execute();
     }
 }

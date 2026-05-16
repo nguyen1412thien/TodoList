@@ -10,22 +10,28 @@ class Todo
     }
 
     //create Todo
-    public function create($user_id, $title, $description)
+    public function create($user_id, $title, $description, $status = 'pending', $priority = 'medium', $due_date = null)
     {
         $sql = "
         INSERT INTO $this->table (
             user_id,
             title,
-            description
+            description,
+            status,
+            priority,
+            due_date
         )
         VALUES (
+            ?,
+            ?,
+            ?,
             ?,
             ?,
             ?
         )
         ";
         $stmt = mysqli_prepare($this->conn, $sql);
-        mysqli_stmt_bind_param($stmt, "iss", $user_id, $title, $description);
+        mysqli_stmt_bind_param($stmt, "isssss", $user_id, $title, $description, $status, $priority, $due_date);
         return mysqli_stmt_execute($stmt);
     }
 

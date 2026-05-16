@@ -49,6 +49,7 @@ class AuthController
 
             $payload = [
                 "user_id" => $user["id"],
+                "name" => $user["name"],
                 "username" => $user["username"],
                 "email" => $user["email"],
                 "iat" => time(),
@@ -63,6 +64,7 @@ class AuthController
                 "token" => $jwt,
                 "user" => [
                     "id" => $user["id"],
+                    "name" => $user["name"],
                     "username" => $user["username"],
                     "email" => $user["email"]
                 ]
@@ -80,17 +82,19 @@ class AuthController
     {
         try {
             if (
+                !isset($data["name"]) ||
                 !isset($data["username"]) ||
                 !isset($data["email"]) ||
                 !isset($data["password"])
             ) {
                 return [
                     "success" => false,
-                    "error" => "Username, email, and password are required",
+                    "error" => "Name, username, email, and password are required",
                     "code" => 400
                 ];
             }
 
+            $name = trim($data["name"]);
             $username = trim($data["username"]);
             $email = trim($data["email"]);
             $password = trim($data["password"]);
@@ -107,7 +111,7 @@ class AuthController
 
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $created = $this->userModel->create($username, $email, $hashed_password);
+            $created = $this->userModel->create($name, $username, $email, $hashed_password);
 
             if (!$created) {
                 return [

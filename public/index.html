@@ -1,85 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List App</title>
+    <title>ZenTask</title>
+    <!-- Gỡ bỏ CDN của Tailwind, sử dụng hoàn toàn CSS thuần -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Auth Section -->
-        <div id="auth-section" class="container">
-            <div class="auth-tabs">
-                <button id="tab-login" class="active" onclick="showLogin()">Login</button>
-                <button id="tab-register" onclick="showRegister()">Register</button>
-            </div>
-            
-            <div id="login-form" class="auth-form">
-                <h2>Login</h2>
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button onclick="login()">Login</button>
-                <div id="login-error" class="error-msg"></div>
+    <div id="app" class="container">
+        
+        <!-- ================= Auth Section ================= -->
+        <div id="auth-section" class="auth-container card card-auth">
+            <div class="text-center mb-8">
+                <div class="logo-icon flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <h2 class="font-bold text-main" style="font-size: 1.5rem;">ZenTask</h2>
+                <p class="text-muted font-medium text-sm mt-1">Đăng nhập để quản lý công việc</p>
             </div>
 
-            <div id="register-form" class="auth-form" style="display:none;">
-                <h2>Register</h2>
-                <input type="text" id="reg-username" placeholder="Username" required>
-                <input type="email" id="reg-email" placeholder="Email" required>
-                <input type="password" id="reg-password" placeholder="Password" required>
-                <button onclick="register()">Register</button>
-                <div id="reg-error" class="error-msg"></div>
-                <div id="reg-success" class="success-msg"></div>
+            <!-- Auth Tabs -->
+            <div class="flex tabs-container mb-6">
+                <button id="tab-login" class="flex-1 tab-btn font-bold active" onclick="showLogin()">Đăng nhập</button>
+                <button id="tab-register" class="flex-1 tab-btn font-bold" onclick="showRegister()">Đăng ký</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="Email" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Mật khẩu" class="form-input">
+                </div>
+                <button onclick="login()" class="btn btn-primary btn-block mt-4">Đăng Nhập</button>
+                <div id="login-error" class="text-danger text-sm text-center font-medium mt-4"></div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="hidden">
+                <div class="input-group">
+                    <input type="text" id="reg-name" placeholder="Tên hiển thị" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="reg-username" placeholder="Tên đăng nhập" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="email" id="reg-email" placeholder="Email" class="form-input">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="reg-password" placeholder="Mật khẩu" class="form-input">
+                </div>
+                <button onclick="register()" class="btn btn-primary btn-block mt-4">Đăng Ký</button>
+                <div id="reg-error" class="text-danger text-sm text-center font-medium mt-4"></div>
+                <div id="reg-success" class="text-success text-sm text-center font-medium mt-4"></div>
             </div>
         </div>
 
-        <!-- Main Todo Section -->
-        <div id="todo-section" class="container" style="display:none;">
-            <div class="header">
-                <h2>My Todos</h2>
+        <!-- ================= Main Todo Section ================= -->
+        <div id="todo-section" class="hidden">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-10">
                 <div>
-                    <span id="user-info"></span>
-                    <button onclick="logout()" class="btn-secondary">Logout</button>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="logo-icon logo-icon-sm flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <h1 class="font-bold tracking-widest" style="font-size: 1.875rem; letter-spacing: -0.025em;">ZenTask</h1>
+                    </div>
+                    <p class="text-muted font-medium text-sm ml-13">Stay focused and get things done.</p>
+                </div>
+                <div class="text-right">
+                    <span id="user-info" class="text-sm font-bold text-dark block mb-1"></span>
+                    <button onclick="logout()" class="btn text-xs font-bold text-danger uppercase tracking-widest" style="background: transparent; padding:0;">Đăng xuất</button>
+                </div>
+            </header>
+
+            <!-- Input Area -->
+            <div class="card mb-8">
+                <div class="input-group" style="position: relative;">
+                    <input type="text" id="new-todo-title" placeholder="Bạn cần làm gì hôm nay?" class="form-input form-input-lg" style="background-color: var(--bg-input);" onkeypress="handleKeyPress(event)">
+                    <button onclick="createTodo()" class="btn btn-primary btn-icon btn-icon-absolute">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                </div>
+                
+                <div class="grid-2 mb-4">
+                    <!-- Priority -->
+                    <div>
+                        <label class="form-label">Độ ưu tiên</label>
+                        <div class="flex gap-1 input-match-height" id="new-priority-btns">
+                            <button type="button" onclick="setNewPriority('low', this)" class="btn priority-btn flex-1" data-value="low">Thấp</button>
+                            <button type="button" onclick="setNewPriority('medium', this)" class="btn priority-btn flex-1 priority-medium active" data-value="medium">Vừa</button>
+                            <button type="button" onclick="setNewPriority('high', this)" class="btn priority-btn flex-1" data-value="high">Cao</button>
+                        </div>
+                        <input type="hidden" id="new-priority-value" value="medium">
+                    </div>
+
+                    <!-- Due Date -->
+                    <div>
+                        <label class="form-label">Hạn chót</label>
+                        <input type="datetime-local" id="new-todo-duedate" class="form-input input-match-height">
+                    </div>
+                </div>
+
+                <!-- Description Toggle -->
+                <div class="pt-4" style="border-top: 1px solid var(--border-light); margin-top: 0.5rem;">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="form-label" style="margin: 0;">Thêm mô tả chi tiết</label>
+                        <button id="desc-toggle-btn" type="button" onclick="toggleDescription()" class="toggle-switch">
+                            <span id="desc-toggle-circle" class="toggle-circle"></span>
+                        </button>
+                    </div>
+                    <div id="new-todo-desc-container" class="hidden">
+                        <textarea id="new-todo-desc" placeholder="Nhập mô tả cho công việc này..." rows="3" class="form-input mt-2"></textarea>
+                    </div>
                 </div>
             </div>
 
-            <div class="create-todo">
-                <h3>Add New Todo</h3>
-                <input type="text" id="new-todo-title" placeholder="Title" required>
-                <input type="text" id="new-todo-desc" placeholder="Description (optional)">
-                <button onclick="createTodo()">Add</button>
+            <!-- Filter & Stats -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex tabs-container" id="filter-tabs">
+                    <button onclick="setFilter('all', this)" class="btn filter-btn active" data-filter="all">Tất cả</button>
+                    <button onclick="setFilter('pending', this)" class="btn filter-btn" data-filter="pending">Đang làm</button>
+                    <button onclick="setFilter('completed', this)" class="btn filter-btn" data-filter="completed">Đã xong</button>
+                </div>
+                <div class="text-right">
+                    <span class="form-label">Tiến độ</span>
+                    <span id="progress-text" class="text-sm font-bold text-dark">0%</span>
+                </div>
             </div>
 
-            <div id="todos-list">
+            <!-- List Items -->
+            <div id="todos-list" class="flex flex-col gap-3">
                 <!-- Todos will be injected here -->
             </div>
+
+            <!-- Footer -->
+            <footer class="flex justify-between items-center mt-20 pt-8" style="border-top: 1px solid var(--border-light);">
+                <div class="flex gap-6">
+                    <div>
+                        <span class="form-label">Active</span>
+                        <span id="active-count" class="text-sm font-bold text-dark">0</span>
+                    </div>
+                    <div>
+                        <span class="form-label">Done</span>
+                        <span id="done-count" class="text-sm font-bold text-dark">0</span>
+                    </div>
+                </div>
+                <span class="form-label" style="margin: 0; color: #d1d5db;">Design v2.0 CSS</span>
+            </footer>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="modal">
+    <!-- ================= Edit Modal ================= -->
+    <div id="edit-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Edit Todo</h2>
+            <h2 class="modal-title font-bold text-main">Chỉnh sửa công việc</h2>
+            
             <input type="hidden" id="edit-todo-id">
-            <input type="text" id="edit-todo-title" placeholder="Title" required>
-            <input type="text" id="edit-todo-desc" placeholder="Description">
             
-            <label>Status:</label>
-            <select id="edit-todo-status">
-                <option value="pending">Pending</option>
-                <option value="completed">Completed</option>
-            </select>
+            <div class="input-group">
+                <label class="form-label">Tiêu đề</label>
+                <input type="text" id="edit-todo-title" class="form-input">
+            </div>
             
-            <label>Priority:</label>
-            <select id="edit-todo-priority">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
+            <div class="input-group">
+                <label class="form-label">Mô tả (Tùy chọn)</label>
+                <input type="text" id="edit-todo-desc" class="form-input">
+            </div>
 
-            <button onclick="updateTodo()">Save Changes</button>
+            <div class="flex gap-4 mb-6">
+                <div class="flex-1">
+                    <label class="form-label">Trạng thái</label>
+                    <select id="edit-todo-status" class="form-input">
+                        <option value="pending">Đang làm</option>
+                        <option value="completed">Đã xong</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label class="form-label">Độ ưu tiên</label>
+                    <select id="edit-todo-priority" class="form-input">
+                        <option value="low">Thấp</option>
+                        <option value="medium">Vừa</option>
+                        <option value="high">Cao</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeEditModal()" class="btn btn-block btn-cancel">Hủy</button>
+                <button onclick="updateTodo()" class="btn btn-block btn-primary">Lưu thay đổi</button>
+            </div>
         </div>
     </div>
 

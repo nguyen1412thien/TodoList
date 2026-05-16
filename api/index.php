@@ -22,6 +22,8 @@ if ($result["success"]) {
     echo json_encode([
         "user" => [
             "id" => $current_user->user_id,
+            "name" => $current_user->name ?? $current_user->username,
+            "username" => $current_user->username,
             "email" => $current_user->email
         ],
         "todos" => $result["data"]
