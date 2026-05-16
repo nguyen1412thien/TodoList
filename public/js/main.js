@@ -72,6 +72,14 @@ async function fetchTodos() {
             document.getElementById('widget-user-name').textContent = usernameDisplay;
         }
         
+        const widgetAvatarImg = document.getElementById('widget-user-avatar');
+        const widgetAvatarSvg = document.getElementById('widget-default-avatar');
+        if (currentUser.avatar && widgetAvatarImg) {
+            widgetAvatarImg.src = "/TodoList/" + currentUser.avatar;
+            widgetAvatarImg.classList.remove('hidden');
+            if (widgetAvatarSvg) widgetAvatarSvg.classList.add('hidden');
+        }
+        
         renderTodos();
     } else {
         if (status === 401) {
