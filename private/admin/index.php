@@ -71,10 +71,43 @@
             <div id="total-users-count">Tổng cộng: 0 tài khoản</div>
             <div>Hệ thống ZenTask v2.0</div>
         </div>
+
+        <!-- Role Change Modal -->
+        <div id="role-modal" class="modal-overlay hidden" style="z-index: 100;">
+            <div class="modal-content !max-w-sm text-center">
+                <div class="bg-primary/10 mx-auto mb-4 flex items-center justify-center text-primary" style="width: 4rem; height: 4rem; border-radius: 50%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                </div>
+                <h2 class="font-bold text-dark text-xl mb-2">Thay đổi vai trò</h2>
+                <p id="role-modal-desc" class="text-muted text-sm mb-6">Chọn vai trò mới cho người dùng này.</p>
+                
+                <div class="flex flex-col gap-3 mb-6">
+                    <button id="btn-set-user" onclick="confirmRoleChange('user')" class="flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-gray-50 hover:bg-gray-100 transition-all text-left group">
+                        <div>
+                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Người dùng (User)</div>
+                            <div class="text-[10px] text-muted">Quyền hạn cơ bản, chỉ quản lý task cá nhân.</div>
+                        </div>
+                        <div class="radio-circle"></div>
+                    </button>
+                    <button id="btn-set-admin" onclick="confirmRoleChange('admin')" class="flex items-center justify-between p-4 rounded-2xl border-2 border-transparent bg-gray-50 hover:bg-gray-100 transition-all text-left group">
+                        <div>
+                            <div class="font-bold text-dark group-hover:text-primary transition-colors">Quản trị viên (Admin)</div>
+                            <div class="text-[10px] text-muted">Toàn quyền hệ thống và quản lý tài khoản.</div>
+                        </div>
+                        <div class="radio-circle"></div>
+                    </button>
+                </div>
+
+                <button onclick="closeRoleModal()" class="btn btn-block btn-white py-3 rounded-xl font-bold text-muted uppercase tracking-widest text-[10px]">Hủy bỏ</button>
+            </div>
+        </div>
     </div>
 
     <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
     <script>
+        let currentTargetUserId = null;
+        let currentTargetUserRole = null;
+
         // Bảo mật: Nếu không phải admin thì quay về trang chủ
         if (!isAdmin()) {
             window.location.href = '../../public/main/';
@@ -100,6 +133,7 @@
         function renderUsers(users) {
             const body = document.getElementById('user-list-body');
             const count = document.getElementById('total-users-count');
+            const myId = JSON.parse(atob(getToken().split('.')[1])).user_id;
             
             count.innerText = `Tổng cộng: ${users.length} tài khoản`;
             
@@ -108,12 +142,18 @@
                 return;
             }
 
-            body.innerHTML = users.map(user => `
+            body.innerHTML = users.map(user => {
+                // Kiểm tra xem có được phép sửa role của người này không
+                const canEdit = (user.role === 'user' || user.id == myId);
+                
+                return `
                 <tr class="border-b border-gray-50 hover:bg-primary-light/20 transition-colors">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold overflow-hidden border border-primary/10">
-                                ${user.avatar ? `<img src="${user.avatar}" class="w-full h-full object-cover">` : user.name.charAt(0).toUpperCase()}
+                                ${user.avatar ? 
+                                    `<img src="${user.avatar.startsWith('http') ? user.avatar : `${PROJECT_ROOT}/../${user.avatar}`}" class="w-full h-full object-cover">` 
+                                    : user.name.charAt(0).toUpperCase()}
                             </div>
                             <div>
                                 <div class="font-bold text-dark text-sm">${user.name}</div>
@@ -122,20 +162,74 @@
                         </div>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'}">
+                        <button 
+                            onclick="${canEdit ? `openRoleModal(${user.id}, '${user.role}', '${user.name}')` : `alert('Bạn không có quyền sửa vai trò của Admin khác!')`}"
+                            class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter transition-all ${user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'} ${canEdit ? 'hover:scale-110 active:scale-95 cursor-pointer shadow-sm' : 'opacity-80 cursor-not-allowed'}"
+                        >
                             ${user.role}
-                        </span>
+                        </button>
                     </td>
                     <td class="px-6 py-4 text-xs font-medium text-muted">
                         ${new Date(user.created_at).toLocaleDateString('vi-VN')}
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <button class="text-muted hover:text-danger p-2 transition-colors" title="Tính năng khóa tài khoản sẽ sớm ra mắt">
+                    <td class="px-6 py-4 text-right flex justify-end gap-2">
+                        <button class="text-muted hover:text-danger p-2 transition-colors" title="Khóa tài khoản">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
+        }
+
+        function openRoleModal(userId, role, name) {
+            currentTargetUserId = userId;
+            currentTargetUserRole = role;
+            document.getElementById('role-modal-desc').innerText = `Thay đổi vai trò cho ${name}`;
+            document.getElementById('role-modal').classList.remove('hidden');
+            
+            // Highlight vai trò hiện tại
+            document.getElementById('btn-set-user').classList.toggle('border-primary', role === 'user');
+            document.getElementById('btn-set-admin').classList.toggle('border-primary', role === 'admin');
+        }
+
+        function closeRoleModal() {
+            document.getElementById('role-modal').classList.add('hidden');
+        }
+
+        async function confirmRoleChange(newRole) {
+            if (newRole === currentTargetUserRole) {
+                closeRoleModal();
+                return;
+            }
+
+            const myId = JSON.parse(atob(getToken().split('.')[1])).user_id;
+            const isSelf = currentTargetUserId == myId;
+
+            if (isSelf && newRole === 'user') {
+                if (!confirm("CẢNH BÁO: Bạn đang tự hạ quyền của chính mình. Bạn sẽ bị thoát khỏi trang Admin ngay lập tức. Tiếp tục?")) return;
+            }
+
+            try {
+                const response = await apiCall('/admin/update_role.php', 'POST', {
+                    target_user_id: currentTargetUserId,
+                    new_role: newRole
+                });
+
+                if (response.status === 200 && response.data.success) {
+                    closeRoleModal();
+                    if (isSelf && newRole === 'user') {
+                        alert('Bạn đã tự hạ quyền. Hệ thống sẽ đăng xuất để cập nhật lại vai trò.');
+                        logout(); // Gọi hàm logout để xóa Token cũ
+                    } else {
+                        loadUsers();
+                    }
+                } else {
+                    alert('Lỗi: ' + (response.data.error || 'Không thể cập nhật'));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Lỗi kết nối');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', loadUsers);
