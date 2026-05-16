@@ -18,13 +18,21 @@ $result = $controller->index($current_user->user_id);
 
 http_response_code($result["code"] ?? ($result["success"] ? 200 : 500));
 
+$userQuery = "SELECT * FROM users WHERE id = ?";
+$stmt = $conn->prepare($userQuery);
+$stmt->bind_param("i", $current_user->user_id);
+$stmt->execute();
+$db_user = $stmt->get_result()->fetch_assoc();
+
 if ($result["success"]) {
     echo json_encode([
         "user" => [
-            "id" => $current_user->user_id,
-            "name" => $current_user->name ?? $current_user->username,
-            "username" => $current_user->username,
-            "email" => $current_user->email
+            "id" => $db_user["id"],
+            "name" => $db_user["name"],
+            "username" => $db_user["username"],
+            "email" => $db_user["email"],
+            "avatar" => $db_user["avatar"] ?? null,
+            "created_at" => $db_user["created_at"]
         ],
         "todos" => $result["data"]
     ]);

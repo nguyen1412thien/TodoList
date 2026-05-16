@@ -11,6 +11,17 @@ function showProfile() {
     const profileNameEl = document.getElementById('profile-user-name');
     if (profileNameEl) profileNameEl.textContent = name;
     
+    // Set user avatar
+    const avatarImgEl = document.getElementById('profile-user-avatar');
+    const avatarSvgEl = document.getElementById('profile-default-avatar');
+    if (currentUser.avatar) {
+        if (avatarImgEl) {
+            avatarImgEl.src = "../../" + currentUser.avatar;
+            avatarImgEl.classList.remove('hidden');
+        }
+        if (avatarSvgEl) avatarSvgEl.classList.add('hidden');
+    }
+    
     // Count completed tasks
     const completedTasks = currentTodos.filter(t => t.status === 'completed').length;
     const completedCountEl = document.getElementById('profile-completed-count');
@@ -107,4 +118,15 @@ function updateWidgetProfile() {
     if (currentUser) {
         document.getElementById('widget-user-name').textContent = currentUser.name;
     }
+}
+
+// Avatar Modal Logic
+function openAvatarModal() {
+    const modal = document.getElementById('avatar-modal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeAvatarModal() {
+    const modal = document.getElementById('avatar-modal');
+    if (modal) modal.classList.add('hidden');
 }

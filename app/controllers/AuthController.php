@@ -66,7 +66,9 @@ class AuthController
                     "id" => $user["id"],
                     "name" => $user["name"],
                     "username" => $user["username"],
-                    "email" => $user["email"]
+                    "email" => $user["email"],
+                    "avatar" => $user["avatar"] ?? null,
+                    "created_at" => $user["created_at"] ?? null
                 ]
             ];
         } catch (Exception $e) {

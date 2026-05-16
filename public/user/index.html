@@ -37,8 +37,13 @@
             <!-- Profile Info Card -->
             <section class="profile-main-card card-shadow mb-8 relative text-center">
                 <div class="profile-card-bg-deco absolute"></div>
-                <div class="profile-avatar-large bg-gradient-primary mx-auto mb-4 relative z-10 flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div id="profile-avatar-container" class="profile-avatar-large bg-gradient-primary mx-auto mb-4 relative z-10 flex items-center justify-center text-white cursor-pointer group" onclick="openAvatarModal()" style="border-radius: 50%; overflow: hidden;">
+                    <img id="profile-user-avatar" src="" alt="Avatar" class="w-full h-full object-cover hidden absolute inset-0">
+                    <svg id="profile-default-avatar" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="relative z-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </div>
                 </div>
                 <h2 id="profile-user-name" class="font-bold text-dark text-2xl mb-1">Tên người dùng</h2>
                 <p id="profile-user-date" class="text-muted text-sm font-medium mb-6">Thành viên từ ...</p>
@@ -113,11 +118,21 @@
         </div>
     </div>
 
-    
+    <!-- Avatar Upload Modal -->
+    <div id="avatar-modal" class="modal-overlay hidden" style="z-index: 100;">
+        <div class="modal-content !max-w-sm text-center">
+            <div class="bg-primary/10 mx-auto mb-4 flex items-center justify-center text-primary" style="width: 4rem; height: 4rem; border-radius: 50%;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <h2 class="font-bold text-dark text-xl mb-2">Cập nhật ảnh đại diện</h2>
+            <p class="text-muted text-sm mb-6">Tính năng upload ảnh đang được phát triển. Vui lòng quay lại sau!</p>
+            <button onclick="closeAvatarModal()" class="btn btn-block btn-primary py-3 rounded-xl">Đã hiểu</button>
+        </div>
     </div>
-    <script src="../js/api.js"></script>
-    <script src="../js/main.js?v=2"></script>
-    <script src="../js/user.js?v=2"></script>
+    </div>
+    <script src="../js/api.js?v=4"></script>
+    <script src="../js/main.js?v=4"></script>
+    <script src="../js/user.js?v=4"></script>
     <script>
         requireAuth();
         document.addEventListener('DOMContentLoaded', () => {
