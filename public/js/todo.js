@@ -504,3 +504,14 @@ function clearDatetime() {
     document.getElementById(`${prefix}-duedate-text`).textContent = "Chọn ngày giờ";
     closeDatetimeModal();
 }
+
+// Notification Modal Logic
+function openNotificationModal() {
+    const modal = document.getElementById('notification-modal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function closeNotificationModal() {
+    const modal = document.getElementById('notification-modal');
+    if (modal) modal.classList.add('hidden');
+}

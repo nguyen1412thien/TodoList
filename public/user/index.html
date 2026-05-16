@@ -65,19 +65,17 @@
             </div>
             
             <!-- Settings & Locked Features -->
-            <div class="setting-item card card-shadow flex items-center justify-between p-5 mb-4 locked-feature" title="Tính năng thông báo đang được phát triển">
+            <div class="setting-item card card-shadow flex items-center justify-between p-5 mb-4" onclick="window.location.href='../notifications/'" style="cursor: pointer;">
                 <div class="flex items-center gap-3">
                     <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
-                    <span class="font-medium text-dark locked-feature-text">Thông báo</span>
+                    <span class="font-medium text-dark">Thông báo</span>
                 </div>
-                <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
             </div>
             <div class="setting-item card card-shadow flex items-center justify-between p-5 mb-8" onclick="window.location.href='../security/'" style="cursor: pointer;">
                 <div class="flex items-center gap-3">
                     <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
                     <span class="font-medium text-dark">Bảo mật</span>
                 </div>
-                <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
             </div>
             
             <button onclick="logout()" class="btn btn-block font-bold text-danger uppercase tracking-widest mb-10 btn-logout">
