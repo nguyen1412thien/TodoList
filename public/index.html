@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Auth Section -->
+        <div id="auth-section" class="container">
+            <div class="auth-tabs">
+                <button id="tab-login" class="active" onclick="showLogin()">Login</button>
+                <button id="tab-register" onclick="showRegister()">Register</button>
+            </div>
+            
+            <div id="login-form" class="auth-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button onclick="login()">Login</button>
+                <div id="login-error" class="error-msg"></div>
+            </div>
+
+            <div id="register-form" class="auth-form" style="display:none;">
+                <h2>Register</h2>
+                <input type="text" id="reg-username" placeholder="Username" required>
+                <input type="email" id="reg-email" placeholder="Email" required>
+                <input type="password" id="reg-password" placeholder="Password" required>
+                <button onclick="register()">Register</button>
+                <div id="reg-error" class="error-msg"></div>
+                <div id="reg-success" class="success-msg"></div>
+            </div>
+        </div>
+
+        <!-- Main Todo Section -->
+        <div id="todo-section" class="container" style="display:none;">
+            <div class="header">
+                <h2>My Todos</h2>
+                <div>
+                    <span id="user-info"></span>
+                    <button onclick="logout()" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+
+            <div class="create-todo">
+                <h3>Add New Todo</h3>
+                <input type="text" id="new-todo-title" placeholder="Title" required>
+                <input type="text" id="new-todo-desc" placeholder="Description (optional)">
+                <button onclick="createTodo()">Add</button>
+            </div>
+
+            <div id="todos-list">
+                <!-- Todos will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit Todo</h2>
+            <input type="hidden" id="edit-todo-id">
+            <input type="text" id="edit-todo-title" placeholder="Title" required>
+            <input type="text" id="edit-todo-desc" placeholder="Description">
+            
+            <label>Status:</label>
+            <select id="edit-todo-status">
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+            </select>
+            
+            <label>Priority:</label>
+            <select id="edit-todo-priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+
+            <button onclick="updateTodo()">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
