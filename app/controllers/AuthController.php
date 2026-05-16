@@ -52,6 +52,7 @@ class AuthController
                 "name" => $user["name"],
                 "username" => $user["username"],
                 "email" => $user["email"],
+                "role" => $user["role"],
                 "iat" => time(),
                 "exp" => time() + 3600
             ];
@@ -67,6 +68,7 @@ class AuthController
                     "name" => $user["name"],
                     "username" => $user["username"],
                     "email" => $user["email"],
+                    "role" => $user["role"],
                     "avatar" => $user["avatar"] ?? null,
                     "created_at" => $user["created_at"] ?? null
                 ]

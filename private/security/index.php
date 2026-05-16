@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZenTask - Bảo mật</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../public/style.css?v=<?php echo filemtime('../../public/style.css'); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,7 +26,7 @@
     <div id="app" class="container">
         <!-- Header -->
         <div class="flex items-center gap-4 mb-8">
-            <button class="btn-icon btn-white card-shadow text-muted" onclick="window.location.href='../user/'">
+            <button class="btn-icon btn-white card-shadow text-muted" onclick="window.location.href='../../public/user/'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             </button>
             <h1 class="font-bold text-dark text-xl" style="font-size: 1.25rem;">Bảo mật</h1>
@@ -38,7 +38,7 @@
             </div>
             <h2 class="font-bold text-dark text-xl mb-2">Tính năng đang phát triển</h2>
             <p class="text-muted text-sm">Các tùy chọn bảo mật tài khoản sẽ sớm được cập nhật trong phiên bản tiếp theo.</p>
-            <button onclick="window.location.href='../user/'" class="btn btn-primary mt-6" style="padding: 0.75rem 1.5rem; border-radius: 0.75rem;">Quay lại Hồ sơ</button>
+            <button onclick="window.location.href='../../public/user/'" class="btn btn-primary mt-6" style="padding: 0.75rem 1.5rem; border-radius: 0.75rem;">Quay lại Hồ sơ</button>
         </div>
     </div>
 </body>

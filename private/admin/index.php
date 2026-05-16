@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Quản trị hệ thống</title>
+    <link rel="stylesheet" href="../../public/style.css?v=<?php echo filemtime('../../public/style.css'); ?>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb', 'primary-hover': '#1d4ed8', 'primary-light': '#eff6ff',
+                        main: '#111827', dark: '#374151', muted: '#9ca3af',
+                        danger: '#f43f5e', 'danger-light': '#ffe4e6',
+                        success: '#10b981', 'success-light': '#ecfdf5',
+                        warning: '#f97316', 'warning-light': '#fff7ed'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-primary-light/30">
+    <div id="app" class="container max-w-4xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-4">
+                <button class="btn-icon btn-white card-shadow text-muted" onclick="window.location.href='../../public/user/'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <div>
+                    <h1 class="font-black text-dark text-2xl tracking-tight">Quản trị hệ thống</h1>
+                    <p class="text-muted text-sm font-medium">Quản lý danh sách tài khoản người dùng</p>
+                </div>
+            </div>
+            <div class="bg-primary text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black card-shadow">Admin Dashboard</div>
+        </div>
+
+        <!-- Users Table Card -->
+        <div class="bg-white rounded-3xl card-shadow overflow-hidden border border-primary/5">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-primary-light/50 border-b border-primary/10">
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Người dùng</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Vai trò</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Ngày tham gia</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list-body">
+                        <!-- JS will populate this -->
+                        <tr>
+                            <td colspan="4" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center gap-2 text-muted">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                                    <span class="text-sm font-medium">Đang tải danh sách...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer Stats -->
+        <div class="mt-8 flex justify-between items-center text-muted text-xs font-bold uppercase tracking-widest px-4">
+            <div id="total-users-count">Tổng cộng: 0 tài khoản</div>
+            <div>Hệ thống ZenTask v2.0</div>
+        </div>
+    </div>
+
+    <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
+    <script>
+        // Bảo mật: Nếu không phải admin thì quay về trang chủ
+        if (!isAdmin()) {
+            window.location.href = '../../public/main/';
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await apiCall('/admin/users.php');
+                // apiCall trả về { status, data }, nên chúng ta phải kiểm tra response.data
+                if (response.status === 200 && response.data.success) {
+                    renderUsers(response.data.data);
+                } else {
+                    const errorMsg = response.data ? (response.data.error || response.data.message) : 'Lỗi kết nối';
+                    alert('Lỗi: ' + errorMsg);
+                    document.getElementById('user-list-body').innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-danger font-bold">Lỗi: ${errorMsg}</td></tr>`;
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Lỗi hệ thống: ' + error.message);
+            }
+        }
+
+        function renderUsers(users) {
+            const body = document.getElementById('user-list-body');
+            const count = document.getElementById('total-users-count');
+            
+            count.innerText = `Tổng cộng: ${users.length} tài khoản`;
+            
+            if (users.length === 0) {
+                body.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-muted">Không có người dùng nào</td></tr>';
+                return;
+            }
+
+            body.innerHTML = users.map(user => `
+                <tr class="border-b border-gray-50 hover:bg-primary-light/20 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold overflow-hidden border border-primary/10">
+                                ${user.avatar ? `<img src="${user.avatar}" class="w-full h-full object-cover">` : user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-bold text-dark text-sm">${user.name}</div>
+                                <div class="text-muted text-xs">@${user.username}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${user.role === 'admin' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'}">
+                            ${user.role}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-xs font-medium text-muted">
+                        ${new Date(user.created_at).toLocaleDateString('vi-VN')}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button class="text-muted hover:text-danger p-2 transition-colors" title="Tính năng khóa tài khoản sẽ sớm ra mắt">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUsers);
+    </script>
+</body>
+</html>
