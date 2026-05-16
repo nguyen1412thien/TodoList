@@ -196,47 +196,52 @@
 
     
     <div id="datetime-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h2 class="modal-title font-bold text-main">Chọn Hạn chót</h2>
-            
-            <div class="mb-4">
-                <label class="form-label">Ngày</label>
-                <div class="styled-date-container">
-                    <input type="date" id="modal-date" class="form-input styled-date-input">
+        <div class="modal-content !max-w-sm">
+            <div class="text-center mb-6">
+                <div class="bg-primary/10 mx-auto mb-3 flex items-center justify-center text-primary" style="width: 3.5rem; height: 3.5rem; border-radius: 50%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 </div>
+                <h2 class="modal-title font-bold text-main text-xl">Thời hạn công việc</h2>
+            </div>
+            
+            <div class="mb-5 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                <label class="form-label text-center mb-3">Ngày thực hiện</label>
+                <input type="date" id="modal-date" class="form-input !w-full !p-3 text-center font-bold text-lg rounded-xl shadow-sm bg-white border-gray-200">
             </div>
 
-            <div class="mb-6">
-                <div class="flex justify-between items-center mb-2">
+            <div class="mb-6 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                <div class="flex justify-between items-center mb-3 px-2">
                     <label class="form-label mb-0">Thời gian</label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 bg-white px-3 py-1 rounded-lg shadow-sm border border-gray-100">
                         <span class="text-xs font-bold" id="format-label-12h" style="color: var(--text-main);">12h</span>
-                        <button id="time-format-toggle" type="button" onclick="toggleTimeFormat()" class="toggle-switch">
+                        <button id="time-format-toggle" type="button" onclick="toggleTimeFormat()" class="toggle-switch transform scale-75 origin-center m-0">
                             <span class="toggle-circle"></span>
                         </button>
                         <span class="text-xs font-bold text-muted" id="format-label-24h">24h</span>
                     </div>
                 </div>
                 
-                <div class="flex gap-2 items-center time-input-container">
-                    <input type="number" id="modal-hour" class="form-input time-input text-center font-bold" min="1" max="12" placeholder="12" onchange="validateTimeInput(this, 'hour')" onblur="formatTimeInput(this)">
-                    <span class="font-bold text-lg">:</span>
-                    <input type="number" id="modal-minute" class="form-input time-input text-center font-bold" min="0" max="59" placeholder="00" onchange="validateTimeInput(this, 'minute')" onblur="formatTimeInput(this)">
+                <div class="flex gap-3 justify-center items-center mt-2">
+                    <input type="number" id="modal-hour" class="form-input text-center font-bold text-3xl !w-20 !h-16 shadow-sm !p-0 rounded-xl bg-white border-gray-200" min="1" max="12" placeholder="12" onchange="validateTimeInput(this, 'hour')" onblur="formatTimeInput(this)">
                     
-                    <div id="ampm-toggle-container" class="flex tabs-container ml-2" style="padding: 0.15rem;">
-                        <button type="button" id="btn-am" class="tab-btn font-bold active" style="padding: 0.3rem 0.6rem;" onclick="setAmPm('AM')">AM</button>
-                        <button type="button" id="btn-pm" class="tab-btn font-bold" style="padding: 0.3rem 0.6rem;" onclick="setAmPm('PM')">PM</button>
+                    <span class="font-bold text-2xl text-gray-400">:</span>
+                    
+                    <input type="number" id="modal-minute" class="form-input text-center font-bold text-3xl !w-20 !h-16 shadow-sm !p-0 rounded-xl bg-white border-gray-200" min="0" max="59" placeholder="00" onchange="validateTimeInput(this, 'minute')" onblur="formatTimeInput(this)">
+                    
+                    <div id="ampm-toggle-container" class="flex flex-col tabs-container bg-gray-100 p-1 rounded-xl shadow-inner gap-1 ml-2">
+                        <button type="button" id="btn-am" class="tab-btn font-bold active text-xs px-3 py-1.5 rounded-lg" onclick="setAmPm('AM')">AM</button>
+                        <button type="button" id="btn-pm" class="tab-btn font-bold text-xs px-3 py-1.5 rounded-lg" onclick="setAmPm('PM')">PM</button>
                         <input type="hidden" id="modal-ampm" value="AM">
                     </div>
                 </div>
                 <input type="hidden" id="modal-time-format" value="12">
             </div>
 
-            <div class="flex gap-3 mt-4">
-                <button onclick="closeDatetimeModal()" class="btn btn-block btn-cancel">Bỏ qua</button>
-                <button onclick="saveDatetime()" class="btn btn-block btn-primary">Xác nhận</button>
-                <button onclick="clearDatetime()" class="btn btn-block" style="background: transparent; color: var(--color-danger); border: 1px solid var(--border-light);">Xóa trắng</button>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeDatetimeModal()" class="btn flex-1 btn-cancel bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl">Bỏ qua</button>
+                <button onclick="saveDatetime()" class="btn flex-1 btn-primary py-3 rounded-xl">Xác nhận</button>
             </div>
+            <button onclick="clearDatetime()" class="w-full mt-3 text-sm font-semibold text-danger hover:text-red-700 transition-colors py-2">Xóa trắng (Không giới hạn thời gian)</button>
         </div>
     </div>
 
