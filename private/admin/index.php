@@ -51,10 +51,10 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-primary-light/50 border-b border-primary/10">
+                        <tr class="bg-primary-light/95 border-b border-primary-light/40">
                             <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Người dùng</th>
-                            <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-center">Vai trò</th>
-                            <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-left">Ngày tham gia</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Vai trò</th>
+                            <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Ngày tham gia</th>
                             <th class="px-6 py-4 text-right"></th>
                         </tr>
                     </thead>
@@ -96,10 +96,10 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-red-50/50 border-b border-red-100">
+                            <tr class="bg-red-50/90 border-b border-red-100/60">
                                 <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted">Người dùng</th>
-                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest text-center">Vai trò cũ</th>
-                                <th class="px-6 py-4 text-xs font-bold text-muted uppercase tracking-widest">Ngày xóa</th>
+                                <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Vai trò cũ</th>
+                                <th class="px-6 py-4 text-[10px] uppercase tracking-widest font-black text-muted text-center">Ngày xóa</th>
                                 <th class="px-6 py-4 text-right text-[10px] uppercase tracking-widest font-black text-muted">Thao tác</th>
                             </tr>
                         </thead>
@@ -219,7 +219,7 @@
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter bg-gray-100 text-gray-400">${u.role}</span>
                             </td>
-                            <td class="px-6 py-4 text-xs font-medium text-muted">
+                            <td class="px-6 py-4 text-xs font-medium text-muted text-center">
                                 ${new Date(u.deleted_at).toLocaleDateString('vi-VN')} ${new Date(u.deleted_at).toLocaleTimeString('vi-VN')}
                             </td>
                             <td class="px-6 py-4 text-right">
@@ -285,7 +285,7 @@
                             ${user.role === 'superadmin' ? 'Quản trị tối cao' : (user.role === 'admin' ? 'Quản trị viên' : 'Người dùng')}
                         </button>
                     </td>
-                    <td class="px-6 py-4 text-xs font-medium text-muted">
+                    <td class="px-6 py-4 text-xs font-medium text-muted text-center">
                         ${new Date(user.created_at).toLocaleDateString('vi-VN')}
                     </td>
                     <td class="px-6 py-4 text-right flex justify-end gap-2">
