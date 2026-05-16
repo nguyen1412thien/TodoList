@@ -27,7 +27,7 @@ async function login() {
         setToken(data.token, rememberMe);
         
         // redirect to todo page
-        window.location.href = '../todo/';
+        window.location.href = '../main/';
     } else {
         errorDiv.textContent = data.error || 'Đăng nhập thất bại';
     }

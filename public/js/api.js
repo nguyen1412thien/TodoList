@@ -59,7 +59,7 @@ function requireAuth() {
 
 function requireGuest() {
     if (getToken()) {
-        window.location.href = '../todo/';
+        window.location.href = '../main/';
     }
 }
 
