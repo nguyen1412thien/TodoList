@@ -61,7 +61,9 @@ function handleKeyPress(e) {
 
 // Todo Actions
 async function fetchTodos() {
+    console.log('[ZenTask] fetchTodos called, API_BASE =', typeof API_BASE !== 'undefined' ? API_BASE : 'UNDEFINED');
     const { status, data } = await apiCall('/index.php', 'GET');
+    console.log('[ZenTask] fetchTodos response:', status, data);
     
     if (status === 200) {
         currentUser = data.user;
@@ -85,7 +87,7 @@ async function fetchTodos() {
         if (status === 401) {
             logout();
         } else {
-            console.error('Failed to fetch todos');
+            console.error('[ZenTask] Failed to fetch todos, status:', status, 'data:', data);
         }
     }
 }
@@ -223,14 +225,14 @@ async function createTodo() {
     if (status === 200) {
         fetchTodos(); // Refresh for real ID
     } else {
-        alert('Lỗi: ' + data.error);
+        await showDialog('Lỗi', data.error || 'Không thể thêm công việc', 'error');
         currentTodos = currentTodos.filter(t => t.id !== tempId);
         renderTodos();
     }
 }
 
 async function deleteTodo(id) {
-    if (!confirm('Xóa công việc này?')) return;
+    if (!await showConfirm('Xóa công việc', 'Bạn có chắc muốn xóa công việc này không?', 'Xóa', true)) return;
 
     // Fast UI Update
     currentTodos = currentTodos.filter(t => t.id !== id);
@@ -310,7 +312,7 @@ async function updateTodo() {
     const due_date = document.getElementById('edit-todo-duedate').value || null;
 
     if (!title) {
-        alert('Vui lòng nhập tiêu đề');
+        await showDialog('Thông báo', 'Vui lòng nhập tiêu đề công việc!', 'warning');
         return;
     }
 
@@ -328,7 +330,7 @@ async function updateTodo() {
     });
 
     if (reqStatus !== 200) {
-        alert('Lỗi cập nhật: ' + data.error);
+        await showDialog('Lỗi cập nhật', data.error || 'Không thể cập nhật công việc', 'error');
         fetchTodos();
     }
 }
@@ -464,7 +466,7 @@ function formatTimeInput(input) {
     }
 }
 
-function saveDatetime() {
+async function saveDatetime() {
     const prefix = currentDatetimeTarget === 'edit' ? 'edit-todo' : 'new-todo';
     const dateInput = document.getElementById('modal-date').value;
     let hours = parseInt(document.getElementById('modal-hour').value) || 0;
@@ -472,7 +474,7 @@ function saveDatetime() {
     const is24h = document.getElementById('modal-time-format').value === '24';
     
     if (!dateInput) {
-        alert('Vui lòng chọn ngày!');
+        await showDialog('Thông báo', 'Vui lòng chọn ngày!', 'warning');
         return;
     }
 

@@ -21,6 +21,8 @@
             }
         }
     </script>
+    <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
+    <script>requireAuth();</script>
 </head>
 <body>
     <div id="app" class="container">
@@ -273,11 +275,9 @@
     </div>
     
     </div>
-    <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
     <script src="../js/dialog.js?v=<?php echo filemtime('../js/dialog.js'); ?>"></script>
     <script src="../js/main.js?v=<?php echo filemtime('../js/main.js'); ?>"></script>
     <script>
-        requireAuth();
         document.addEventListener('DOMContentLoaded', fetchTodos);
     </script>
 </body>

@@ -9,28 +9,24 @@ use Firebase\JWT\Key;
 //secret key for
 $secret_key = "thien_jwt_secret_key_for_todolist_project";
 
+// Check authorization header (case-insensitive)
 $headers = getallheaders();
+$authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? null;
 
-//check authorization header
-if (!isset($headers["Authorization"])) {
-    echo json_encode([
-        "error" => "Authorization header is required"
-    ]);
-
+if (!$authHeader) {
+    http_response_code(401);
+    echo json_encode(["error" => "Authorization header is required"]);
     exit;
 }
 
 //get token from header
-$auth_header = $headers["Authorization"];
-$token = str_replace("Bearer ", "", $auth_header);
+$token = str_replace("Bearer ", "", $authHeader);
 
-//verify JWT token
 try {
     $decoded = JWT::decode($token, new Key($secret_key, "HS256"));
 } catch (Exception $e) {
-    echo json_encode([
-        "error" => "Invalid token: " . $e->getMessage()
-    ]);
+    http_response_code(401);
+    echo json_encode(["error" => "Invalid token: " . $e->getMessage()]);
     exit;
 }
 

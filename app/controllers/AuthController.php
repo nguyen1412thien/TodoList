@@ -41,6 +41,15 @@ class AuthController
                 ];
             }
 
+            // Kiểm tra tài khoản bị khóa
+            if (isset($user['status']) && $user['status'] === 'locked') {
+                return [
+                    "success" => false,
+                    "error" => "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin để mở khóa.",
+                    "code" => 403
+                ];
+            }
+
             if (!password_verify($password, $user["password"])) {
                 return [
                     "success" => false,
@@ -65,8 +74,10 @@ class AuthController
             $device = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown Device';
             $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
             $log_stmt = mysqli_prepare($this->conn, "INSERT INTO login_logs (user_id, device, ip) VALUES (?, ?, ?)");
-            mysqli_stmt_bind_param($log_stmt, "iss", $user["id"], $device, $ip);
-            mysqli_stmt_execute($log_stmt);
+            if ($log_stmt) {
+                mysqli_stmt_bind_param($log_stmt, "iss", $user["id"], $device, $ip);
+                mysqli_stmt_execute($log_stmt);
+            }
 
             return [
                 "success" => true,

@@ -21,6 +21,13 @@
             }
         }
     </script>
+    <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
+    <script>
+        requireAuth();
+        if (!isAdmin()) {
+            window.location.href = '../../public/main/';
+        }
+    </script>
 </head>
 <body class="bg-primary-light/30">
     <div id="app" class="container max-w-4xl mx-auto px-4 py-8">
@@ -103,7 +110,6 @@
         </div>
     </div>
 
-    <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
     <script src="../../public/js/dialog.js?v=<?php echo filemtime('../../public/js/dialog.js'); ?>"></script>
     <script>
         let currentTargetUserId = null;

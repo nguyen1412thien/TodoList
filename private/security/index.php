@@ -24,6 +24,8 @@
             }
         }
     </script>
+    <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
+    <script>requireAuth();</script>
 </head>
 <body class="bg-gray-50">
     <div id="app" class="container max-w-4xl mx-auto px-4 py-8">
@@ -118,7 +120,6 @@
         </div>
     </div>
 
-    <script src="../../public/js/api.js?v=<?php echo filemtime('../../public/js/api.js'); ?>"></script>
     <script src="../../public/js/dialog.js?v=<?php echo filemtime('../../public/js/dialog.js'); ?>"></script>
     <script src="../../public/js/security.js?v=<?php echo filemtime('../../public/js/security.js'); ?>"></script>
 </body>
