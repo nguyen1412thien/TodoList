@@ -1,4 +1,3 @@
-vendor/
 node_modules/
 
 .env
@@ -7,4 +6,4 @@ node_modules/
 
 .idea/
 .vscode/
-*.log/vendor
+*.log
