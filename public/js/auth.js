@@ -25,9 +25,12 @@ async function login() {
 
     if (status === 200 && data.token) {
         setToken(data.token, rememberMe);
-        
+
         // redirect to todo page
-        window.location.href = '../main/';
+        window.location.href = '../todo/';
+    } else if (status === 403) {
+        showDialog('Thông báo', data.error || 'Tài khoản của bạn đã bị khóa.', 'error');
+        errorDiv.textContent = '';
     } else {
         errorDiv.textContent = data.error || 'Đăng nhập thất bại';
     }

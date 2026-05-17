@@ -22,6 +22,7 @@
         }
     </script>
     <script src="../js/api.js?v=<?php echo filemtime('../js/api.js'); ?>"></script>
+    <script src="../js/dialog.js?v=<?php echo filemtime('../js/dialog.js'); ?>"></script>
     <script>requireGuest();</script>
 </head>
 <body>
