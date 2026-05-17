@@ -16,7 +16,7 @@ function showProfile() {
     const avatarSvgEl = document.getElementById('profile-default-avatar');
     if (currentUser.avatar) {
         if (avatarImgEl) {
-            avatarImgEl.src = "/TodoList/" + currentUser.avatar;
+            avatarImgEl.src = currentUser.avatar.startsWith('http') ? currentUser.avatar : `${PROJECT_ROOT}/../${currentUser.avatar}`;
             avatarImgEl.classList.remove('hidden');
         }
         if (avatarSvgEl) avatarSvgEl.classList.add('hidden');

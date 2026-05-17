@@ -77,7 +77,7 @@ async function fetchTodos() {
         const widgetAvatarImg = document.getElementById('widget-user-avatar');
         const widgetAvatarSvg = document.getElementById('widget-default-avatar');
         if (currentUser.avatar && widgetAvatarImg) {
-            widgetAvatarImg.src = "/TodoList/" + currentUser.avatar;
+            widgetAvatarImg.src = currentUser.avatar.startsWith('http') ? currentUser.avatar : `${PROJECT_ROOT}/../${currentUser.avatar}`;
             widgetAvatarImg.classList.remove('hidden');
             if (widgetAvatarSvg) widgetAvatarSvg.classList.add('hidden');
         }
